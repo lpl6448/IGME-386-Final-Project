@@ -494,7 +494,7 @@ MonoBehaviour:
     y: 43
     z: 0
     SRWkid: 4326
-  mapType: 1
+  mapType: 0
   editorModeEnabled: 1
   dataFetchWithSceneView: 1
   rebaseWithSceneView: 0
@@ -517,15 +517,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LocalPosition:
-    x: -8638392.48555803
-    y: 0
-    z: 5311971.84694547
+    x: 1003233.4225089502
+    y: 4327501.759196973
+    z: -4562967.283443291
   m_LocalRotation:
     value:
-      x: 0
-      y: 0
-      z: 0
-      w: 1
+      x: -0.39641678
+      y: -0.099041894
+      z: -0.043064643
+      w: 0.91169614
 --- !u!4 &1139613954
 Transform:
   m_ObjectHideFlags: 0
@@ -538,7 +538,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1823688467}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1823688464
@@ -550,11 +551,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1823688467}
+  - component: {fileID: 1823688471}
   - component: {fileID: 1823688466}
   - component: {fileID: 1823688465}
   - component: {fileID: 1823688468}
+  - component: {fileID: 1823688470}
+  - component: {fileID: 1823688469}
+  - component: {fileID: 1823688472}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: ArcGISCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -627,12 +632,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823688464}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.31443194, y: 0.33293155, z: -0.11882321, w: 0.8810052}
-  m_LocalPosition: {x: -3757.8203, y: 509.6176, z: 12524.385}
+  m_LocalRotation: {x: 0.3171379, y: -0.12351598, z: 0.041995794, w: 0.93936354}
+  m_LocalPosition: {x: -6134.765, y: 316.40213, z: 9183.682}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1139613954}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1823688468
 MonoBehaviour:
@@ -763,6 +768,90 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
+--- !u!114 &1823688469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823688464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e295d62bf65a7247bc772a43507fd4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position:
+    x: -77.67533258813711
+    y: 43.08263724034811
+    z: 325.9725341796875
+    SRWkid: 4326
+  rotation:
+    Heading: 344.95632920358474
+    Pitch: 52.77957540494094
+    Roll: 0.00007983751341744247
+  surfacePlacementMode: 0
+  surfacePlacementOffset: 0
+--- !u!114 &1823688470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823688464}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bbba49acb848c0448694828560b07fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpdateClippingPlanes: 1
+  UseCameraViewportProperties: 1
+  verticalFov: 0
+  horizontalFov: 0
+  viewportSizeX: 0
+  viewportSizeY: 0
+  qualityScalingFactor: 1
+--- !u!114 &1823688471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823688464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea4c056ecab070c43bf3f5e9fb15b826, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsInitialized: 1
+  m_LocalPosition:
+    x: 995946.5155648958
+    y: 4334434.06415532
+    z: -4558393.490039481
+  m_LocalRotation:
+    value:
+      x: 0.09272454
+      y: 0.20265496
+      z: -0.07820779
+      w: -0.9717081
+  m_LocalScale:
+    x: 1
+    y: 1
+    z: 1
+--- !u!114 &1823688472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823688464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27afbdfc83e47004e95ef7726ed4a9cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxSpeed: 2000000
+  MinSpeed: 1000
+  IgnoreUI: 0
 --- !u!1 &2013410473
 GameObject:
   m_ObjectHideFlags: 1
@@ -815,7 +904,6 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1823688467}
   - {fileID: 157207114}
   - {fileID: 432432461}
   - {fileID: 2013410475}

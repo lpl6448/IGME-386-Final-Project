@@ -441,9 +441,9 @@ MonoBehaviour:
   enableExtent: 1
   extent:
     GeographicCenter:
-      x: -116.1975033
-      y: 43.6046715
-      z: 0.0000000023522402304956687
+      x: 0
+      y: 0
+      z: 0
       SRWkid: 4326
     ExtentShape: 2
     ShapeDimensions:
@@ -472,27 +472,27 @@ MonoBehaviour:
       IsEnabled: 0
       Polygons:
       - Points:
-        - x: -8640670.875206467
-          y: 5326115.135031408
-          z: 166.7452850341797
-          SRWkid: 3857
-        - x: -8640279.720909592
-          y: 5324013.252218908
-          z: 166.74530029296875
-          SRWkid: 3857
-        - x: -8642196.397179123
-          y: 5323927.344992345
-          z: 166.74530029296875
-          SRWkid: 3857
-        - x: -8642598.008018967
-          y: 5325368.119406408
-          z: 166.74530029296875
-          SRWkid: 3857
+        - x: 0
+          y: 0
+          z: 0
+          SRWkid: 4326
+        - x: 0
+          y: 0
+          z: 0
+          SRWkid: 4326
+        - x: 0
+          y: 0
+          z: 0
+          SRWkid: 4326
+        - x: 0
+          y: 0
+          z: 0
+          SRWkid: 4326
       Type: 0
   originPosition:
-    x: -81.4614689
-    y: 40.7287394
-    z: 0.0000000023522402304956687
+    x: -90
+    y: 43
+    z: 0
     SRWkid: 4326
   mapType: 0
   editorModeEnabled: 1
@@ -517,15 +517,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LocalPosition:
-    x: 718661.0728518503
-    y: 4139641.7533635227
-    z: -4786651.409802666
+    x: 0
+    y: 4327501.759196973
+    z: -4671953.3098922195
   m_LocalRotation:
     value:
-      x: -0.41568947
-      y: -0.067667715
-      z: -0.031031614
-      w: 0.90645486
+      x: -0.39874908
+      y: 0
+      z: 0
+      w: 0.9170601
 --- !u!4 &1139613954
 Transform:
   m_ObjectHideFlags: 0
@@ -749,8 +749,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823688464}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.31638232, y: -0.12405946, z: 0.0417758, w: 0.9395564}
-  m_LocalPosition: {x: -0.000009753118, y: 1000.00006, z: 0.00000053069016}
+  m_LocalRotation: {x: -0.12778774, y: -0.5224332, z: -0.4765112, w: 0.69546455}
+  m_LocalPosition: {x: 6378137, y: -6368199, z: 21329.867}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -898,9 +898,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position:
-    x: -81.4614689
-    y: 40.7287394
-    z: 1000.0000000001678
+    x: 0
+    y: 0
+    z: 0
     SRWkid: 4326
   rotation:
     Heading: 344.95633066931015
@@ -941,15 +941,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_IsInitialized: 1
   m_LocalPosition:
-    x: 718773.5878785315
-    y: 4140294.2319633276
-    z: -4787400.817599237
+    x: 6378137
+    y: 0
+    z: 0
   m_LocalRotation:
     value:
-      x: 0.1104541
-      y: 0.16848405
-      z: -0.081691004
-      w: -0.9760838
+      x: 0.39450487
+      y: 0.6691111
+      z: 0.22866958
+      w: -0.58682746
   m_LocalScale:
     x: 1
     y: 1
@@ -980,6 +980,7 @@ GameObject:
   - component: {fileID: 1925087065}
   - component: {fileID: 1925087064}
   - component: {fileID: 1925087066}
+  - component: {fileID: 1925087067}
   m_Layer: 0
   m_Name: CoordinateTest
   m_TagString: Untagged
@@ -1023,7 +1024,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1925087063}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68a90fd832e4b1745b0fb38360592194, type: 3}
   m_Name: 
@@ -1032,6 +1033,26 @@ MonoBehaviour:
   baseTex: {fileID: 2800000, guid: a8a9234e06379bd49a5c22065e865e07, type: 3}
   extent: 65536
   output: refl
+--- !u!114 &1925087067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925087063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6daa5db27f2a6b948b2598226771d7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 1139613952}
+  cameraLocation: {fileID: 1823688469}
+  cloudsVolume: {fileID: 1433116526}
+  cloudsExtent: 105000
+  rainFog: {fileID: 2100000, guid: 1672d2b4c0382d042a90ed29400e1b58, type: 2}
+  rainExtent: 65536
+  cloudsTex: {fileID: 2800000, guid: d2d03082ad6d4854d9ab2f8e345f1f76, type: 3}
+  reflTex: {fileID: 2800000, guid: a8a9234e06379bd49a5c22065e865e07, type: 3}
 --- !u!1 &2013410473
 GameObject:
   m_ObjectHideFlags: 1

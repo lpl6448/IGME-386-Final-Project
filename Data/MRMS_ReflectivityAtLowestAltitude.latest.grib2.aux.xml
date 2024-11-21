@@ -1,0 +1,60 @@
+<PAMDataset>
+  <Subdataset name="0">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="GRIB_COMMENT">ReflectivityAtLowestAltitude [dBZ]</MDI>
+        <MDI key="GRIB_ELEMENT">ReflectivityAtLowestAltitude</MDI>
+        <MDI key="GRIB_FORECAST_SECONDS">0 sec</MDI>
+        <MDI key="GRIB_LONG_NAME">500[m] GPML="Specific altitude above mean sea level"</MDI>
+        <MDI key="GRIB_REF_TIME">1732207240 sec UTC</MDI>
+        <MDI key="GRIB_SHORT_NAME">500:GPML:m</MDI>
+        <MDI key="GRIB_UNIT">[dBZ]</MDI>
+        <MDI key="GRIB_VALID_TIME">1732207240 sec UTC</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Description>500:GPML:m [Nov 21 16:40:40 2024
+]</Description>
+        <Histograms>
+          <HistItem>
+            <HistMin>-999</HistMin>
+            <HistMax>48</HistMax>
+            <BucketCount>256</BucketCount>
+            <IncludeOutOfRange>1</IncludeOutOfRange>
+            <Approximate>0</Approximate>
+            <HistCounts>295070|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|517062|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|1|5|32|132|706|4335|10518|13251|10926|9374|6477|3614|2086|974|350|76|10|1</HistCounts>
+          </HistItem>
+        </Histograms>
+        <Metadata>
+          <MDI key="GRIB_COMMENT">ReflectivityAtLowestAltitude [dBZ]</MDI>
+          <MDI key="GRIB_DISCIPLINE">209</MDI>
+          <MDI key="GRIB_ELEMENT">ReflectivityAtLowestAltitude</MDI>
+          <MDI key="GRIB_FORECAST_SECONDS">0</MDI>
+          <MDI key="GRIB_IDS">CENTER=161(US NOAA Office of Oceanic and Atmospheric Research) SUBCENTER=0 MASTER_TABLE=255 LOCAL_TABLE=1 SIGNF_REF_TIME=3(Observation_time) REF_TIME=2024-11-21T16:40:40Z PROD_STATUS=2(Research) TYPE=7(Processed_radar_observations)</MDI>
+          <MDI key="GRIB_PDS_PDTN">0</MDI>
+          <MDI key="GRIB_PDS_TEMPLATE_ASSEMBLED_VALUES">3 57 8 0 97 0 0 0 0 102 0 500 255 1 0</MDI>
+          <MDI key="GRIB_PDS_TEMPLATE_NUMBERS">3 57 8 0 97 0 0 0 0 0 0 0 0 102 0 0 0 1 244 255 1 0 0 0 0</MDI>
+          <MDI key="GRIB_REF_TIME">1732207240</MDI>
+          <MDI key="GRIB_SHORT_NAME">500:GPML:m</MDI>
+          <MDI key="GRIB_UNIT">[dBZ]</MDI>
+          <MDI key="GRIB_VALID_TIME">1732207240</MDI>
+          <MDI key="STATISTICS_COVARIANCES">186762.6341603313</MDI>
+          <MDI key="STATISTICS_EXCLUDEDVALUES"></MDI>
+          <MDI key="STATISTICS_MAXIMUM">48</MDI>
+          <MDI key="STATISTICS_MEAN">-394.45518799999</MDI>
+          <MDI key="STATISTICS_MEDIAN">-99.811765</MDI>
+          <MDI key="STATISTICS_MINIMUM">-999</MDI>
+          <MDI key="STATISTICS_SKIPFACTORX">7</MDI>
+          <MDI key="STATISTICS_SKIPFACTORY">4</MDI>
+          <MDI key="STATISTICS_STDDEV">432.16042641632</MDI>
+        </Metadata>
+        <Metadata domain="GRIB">
+          <MDI key="DRS_BINARY_SCALE_FACTOR">0</MDI>
+          <MDI key="DRS_DECIMAL_SCALE_FACTOR">1</MDI>
+          <MDI key="DRS_DRTN">41</MDI>
+          <MDI key="DRS_NBITS">16</MDI>
+          <MDI key="DRS_REF_VALUE">-9990.0000000000</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+</PAMDataset>

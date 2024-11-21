@@ -72,21 +72,21 @@ MonoBehaviour:
     m_Value: 0.528
   altoStratusMap:
     m_OverrideState: 0
-    m_Value: {fileID: 2800000, guid: 1fc4944010f09de4b810ad8d01bf5b79, type: 3}
+    m_Value: {fileID: 2800000, guid: a6a131fff77b43449b9a41cc48314dfa, type: 3}
     dimension: 2
   altoStratusMapMultiplier:
     m_OverrideState: 0
     m_Value: 1
   cumulonimbusMap:
     m_OverrideState: 0
-    m_Value: {fileID: 2800000, guid: d2d03082ad6d4854d9ab2f8e345f1f76, type: 3}
+    m_Value: {fileID: 2800000, guid: a6a131fff77b43449b9a41cc48314dfa, type: 3}
     dimension: 2
   cumulonimbusMapMultiplier:
     m_OverrideState: 0
     m_Value: 1
   rainMap:
-    m_OverrideState: 0
-    m_Value: {fileID: 2800000, guid: d2d03082ad6d4854d9ab2f8e345f1f76, type: 3}
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: a18fe905a81ffb5499a5243276a4f15b, type: 3}
     dimension: 2
   cloudMapResolution:
     m_OverrideState: 1
@@ -316,14 +316,14 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   shadowResolution:
-    m_OverrideState: 0
-    m_Value: 256
+    m_OverrideState: 1
+    m_Value: 512
   shadowPlaneHeightOffset:
     m_OverrideState: 0
     m_Value: 0
   shadowDistance:
-    m_OverrideState: 0
-    m_Value: 8000
+    m_OverrideState: 1
+    m_Value: 65536
   shadowOpacity:
     m_OverrideState: 0
     m_Value: 1

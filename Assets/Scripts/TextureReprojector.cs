@@ -22,16 +22,16 @@ public class TextureReprojector : MonoBehaviour
     [SerializeField] private ArcGISMapComponent map;
     [SerializeField] private Texture2D baseTex;
     [SerializeField] private float extent;
+    [SerializeField] private string output;
     private void Start()
     {
         ArcGISPoint originPoint = GeoUtils.ProjectToSpatialReference(map.OriginPosition, ArcGISSpatialReference.WebMercator());
         float2 origin = (float2)new double2(originPoint.X, originPoint.Y);
-        print("base coords: " + origin);
 
         Texture2D tex = new Texture2D(256, 256, TextureFormat.R8, false, false);
         ReprojectTexture(baseTex, new float2(-15000000, 2000000), new float2(-5000000, 7000000),
             tex, origin - extent, origin + extent);
         tex.Apply();
-        File.WriteAllBytes("Assets/clouds_reproject.png", tex.EncodeToPNG());
+        File.WriteAllBytes($"Assets/{output}.png", tex.EncodeToPNG());
     }
 }

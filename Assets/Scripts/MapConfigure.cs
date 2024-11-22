@@ -38,6 +38,12 @@ public class MapConfigure : MonoBehaviour
 
         TextureReprojector.ReprojectTexture(cloudsTex, new float2(-14600000, 2600000), new float2(-6800000, 6500000),
             rclouds, originMercator - cloudsExtent, originMercator + cloudsExtent);
+        for (int x = 0; x < rclouds.width; x++)
+            for (int y = 0; y < rclouds.height; y++)
+            {
+                Color c = rclouds.GetPixel(x, y);
+                rclouds.SetPixel(x, y, new Color(c.r * 255 / 201, 1, 1, 1));
+            }
         rclouds.Apply();
 
         TextureReprojector.ReprojectTexture(reflTex, new float2(-14600000, 2600000), new float2(-6800000, 6500000),

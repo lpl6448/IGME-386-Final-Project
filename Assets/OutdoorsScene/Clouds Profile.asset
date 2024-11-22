@@ -33,7 +33,7 @@ MonoBehaviour:
     m_Value: 2000
   altitudeRange:
     m_OverrideState: 1
-    m_Value: 10000
+    m_Value: 5000
   fadeInMode:
     m_OverrideState: 0
     m_Value: 0
@@ -65,11 +65,11 @@ MonoBehaviour:
     m_Value: 3
   cumulusMap:
     m_OverrideState: 1
-    m_Value: {fileID: 2800000, guid: a6a131fff77b43449b9a41cc48314dfa, type: 3}
+    m_Value: {fileID: 0}
     dimension: 2
   cumulusMapMultiplier:
     m_OverrideState: 1
-    m_Value: 0.75
+    m_Value: 1
   altoStratusMap:
     m_OverrideState: 0
     m_Value: {fileID: 2800000, guid: a6a131fff77b43449b9a41cc48314dfa, type: 3}
@@ -86,7 +86,7 @@ MonoBehaviour:
     m_Value: 1
   rainMap:
     m_OverrideState: 1
-    m_Value: {fileID: 2800000, guid: a18fe905a81ffb5499a5243276a4f15b, type: 3}
+    m_Value: {fileID: 0}
     dimension: 2
   cloudMapResolution:
     m_OverrideState: 1
@@ -243,10 +243,10 @@ MonoBehaviour:
     m_Value: 0.5
   densityMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.548
   shapeFactor:
     m_OverrideState: 1
-    m_Value: 0.252
+    m_Value: 0.473
   shapeScale:
     m_OverrideState: 1
     m_Value: 5
@@ -255,7 +255,7 @@ MonoBehaviour:
     m_Value: {x: 0, y: 0, z: 0}
   erosionFactor:
     m_OverrideState: 1
-    m_Value: 0.385
+    m_Value: 0.588
   erosionScale:
     m_OverrideState: 1
     m_Value: 107

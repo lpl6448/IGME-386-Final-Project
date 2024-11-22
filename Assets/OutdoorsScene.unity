@@ -1626,10 +1626,10 @@ MonoBehaviour:
     positiveFade: {x: 0, y: 0, z: 0}
     negativeFade: {x: 0, y: 0, z: 0}
     m_EditorUniformFade: 0
-    m_EditorPositiveFade: {x: 0, y: 0, z: 0.000049999995}
-    m_EditorNegativeFade: {x: 0, y: 0, z: 0.000049999995}
+    m_EditorPositiveFade: {x: 0, y: 0, z: 0.000024999998}
+    m_EditorNegativeFade: {x: 0, y: 0, z: 0.000024999998}
     m_EditorAdvancedFade: 0
-    size: {x: 65536, y: 65536, z: 2000}
+    size: {x: 65536, y: 65536, z: 4000}
     invertFade: 0
     distanceFadeStart: 10000000
     distanceFadeEnd: 10000000
@@ -1647,7 +1647,7 @@ Transform:
   m_GameObject: {fileID: 1578305626}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1000, z: 0}
+  m_LocalPosition: {x: 0, y: 1500, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

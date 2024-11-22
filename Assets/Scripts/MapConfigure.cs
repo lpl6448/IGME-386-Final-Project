@@ -28,14 +28,14 @@ public class MapConfigure : MonoBehaviour
         float2 originMercator = (float2)new double2(originPointMercator.X, originPointMercator.Y);
         
         Texture2D rclouds = new Texture2D(256, 256, TextureFormat.R8, false, false);
-        TextureReprojector.ReprojectTexture(cloudsTex, new float2(-15000000, 2000000), new float2(-5000000, 7000000),
+        TextureReprojector.ReprojectTexture(cloudsTex, new float2(-14600000, 2600000), new float2(-6800000, 6500000),
             rclouds, originMercator - cloudsExtent, originMercator + cloudsExtent);
         rclouds.Apply();
         cloudsVolume.profile.TryGet(out VolumetricClouds volumetricClouds);
         volumetricClouds.cumulusMap.value = rclouds;
         
         Texture2D rrain = new Texture2D(256, 256, TextureFormat.RGBA32, false, false);
-        TextureReprojector.ReprojectTexture(reflTex, new float2(-15000000, 2000000), new float2(-5000000, 7000000),
+        TextureReprojector.ReprojectTexture(reflTex, new float2(-14600000, 2600000), new float2(-6800000, 6500000),
             rrain, originMercator - rainExtent, originMercator + rainExtent);
         for (int x = 0; x < rrain.width; x++)
             for (int y = 0; y < rrain.height; y++)
@@ -45,5 +45,17 @@ public class MapConfigure : MonoBehaviour
             }
         rrain.Apply();
         rainFog.SetTexture("_Rain_Texture", rrain);
+        
+        Texture2D rrain2 = new Texture2D(256, 256, TextureFormat.R8, false, false);
+        TextureReprojector.ReprojectTexture(reflTex, new float2(-14600000, 2600000), new float2(-6800000, 6500000),
+            rrain2, originMercator - cloudsExtent, originMercator + cloudsExtent);
+        for (int x = 0; x < rrain2.width; x++)
+            for (int y = 0; y < rrain2.height; y++)
+            {
+                Color c = rrain2.GetPixel(x, y);
+                rrain2.SetPixel(x, y, new Color(math.saturate(math.unlerp(0.01f, 0.05f, c.r)), 1, 1, 1));
+            }
+        rrain2.Apply();
+        volumetricClouds.rainMap.value = rrain2;
     }
 }

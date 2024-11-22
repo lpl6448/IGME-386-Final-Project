@@ -29,7 +29,7 @@ public class TextureReprojector : MonoBehaviour
         float2 origin = (float2)new double2(originPoint.X, originPoint.Y);
 
         Texture2D tex = new Texture2D(256, 256, TextureFormat.R8, false, false);
-        ReprojectTexture(baseTex, new float2(-15000000, 2000000), new float2(-5000000, 7000000),
+        ReprojectTexture(baseTex, new float2(-14600000, 2600000), new float2(-6800000, 6500000),
             tex, origin - extent, origin + extent);
         tex.Apply();
         File.WriteAllBytes($"Assets/{output}.png", tex.EncodeToPNG());

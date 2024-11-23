@@ -15,10 +15,11 @@ public class MapConfigure : MonoBehaviour
 
     [SerializeField] private Volume cloudsVolume;
     [SerializeField] private float cloudsExtent;
-    [SerializeField] private Material rainFog;
+    [SerializeField] private LocalVolumetricFog rainFog;
     [SerializeField] private float rainExtent;
 
     [SerializeField] private Texture2D cloudsTex;
+    [SerializeField] private Texture2D cloudBaseTex;
     [SerializeField] private Texture2D reflTex;
 
     private Texture2D rclouds;
@@ -29,14 +30,28 @@ public class MapConfigure : MonoBehaviour
 
     public void ReconfigureMap(ArcGISPoint originPoint)
     {
+        float2 extentMin = new float2(-14600000, 2600000);
+        float2 extentMax = new float2(-6800000, 6500000);
+
         map.OriginPosition = originPoint;
-        cameraLocation.Position = new ArcGISPoint(originPoint.X, originPoint.Y, 1200);
-        cameraLocation.Rotation = new ArcGISRotation(0, 90, 0);
 
         ArcGISPoint originPointMercator = GeoUtils.ProjectToSpatialReference(originPoint, ArcGISSpatialReference.WebMercator());
         float2 originMercator = (float2)new double2(originPointMercator.X, originPointMercator.Y);
 
-        TextureReprojector.ReprojectTexture(cloudsTex, new float2(-14600000, 2600000), new float2(-6800000, 6500000),
+        float2 originUV = math.unlerp(extentMin, extentMax, originMercator);
+        float height = cloudBaseTex.GetPixelBilinear(originUV.x, originUV.y).r;
+        if (height < 1)
+            height = 1500; // Default if there is no data
+        cloudsVolume.profile.TryGet(out VolumetricClouds volumetricClouds);
+        volumetricClouds.bottomAltitude.value = height;
+        float fogBuffer = 500;
+        rainFog.parameters.size.z = height + fogBuffer;
+        rainFog.transform.position = Vector3.up * height / 2;
+        
+        cameraLocation.Position = new ArcGISPoint(originPoint.X, originPoint.Y, height - 300);
+        cameraLocation.Rotation = new ArcGISRotation(0, 90, 0);
+
+        TextureReprojector.ReprojectTexture(cloudsTex, extentMin, extentMax,
             rclouds, originMercator - cloudsExtent, originMercator + cloudsExtent);
         for (int x = 0; x < rclouds.width; x++)
             for (int y = 0; y < rclouds.height; y++)
@@ -46,7 +61,7 @@ public class MapConfigure : MonoBehaviour
             }
         rclouds.Apply();
 
-        TextureReprojector.ReprojectTexture(reflTex, new float2(-14600000, 2600000), new float2(-6800000, 6500000),
+        TextureReprojector.ReprojectTexture(reflTex, extentMin, extentMax,
             rrain, originMercator - rainExtent, originMercator + rainExtent);
         for (int x = 0; x < rrain.width; x++)
             for (int y = 0; y < rrain.height; y++)
@@ -56,7 +71,7 @@ public class MapConfigure : MonoBehaviour
             }
         rrain.Apply();
 
-        TextureReprojector.ReprojectTexture(reflTex, new float2(-14600000, 2600000), new float2(-6800000, 6500000),
+        TextureReprojector.ReprojectTexture(reflTex, extentMin, extentMax,
             rrain2, originMercator - cloudsExtent, originMercator + cloudsExtent);
         for (int x = 0; x < rrain2.width; x++)
             for (int y = 0; y < rrain2.height; y++)
@@ -81,7 +96,7 @@ public class MapConfigure : MonoBehaviour
 
         rrain = new Texture2D(256, 256, TextureFormat.RGBA32, false, false);
         rrain.wrapMode = TextureWrapMode.Clamp;
-        rainFog.SetTexture("_Rain_Texture", rrain);
+        rainFog.parameters.materialMask.SetTexture("_Rain_Texture", rrain);
 
         rrain2 = new Texture2D(256, 256, TextureFormat.R8, false, false);
         rrain2.wrapMode = TextureWrapMode.Clamp;

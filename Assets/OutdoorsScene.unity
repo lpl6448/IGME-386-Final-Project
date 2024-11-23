@@ -2119,9 +2119,10 @@ MonoBehaviour:
   cameraLocation: {fileID: 1823688469}
   cloudsVolume: {fileID: 1433116526}
   cloudsExtent: 105000
-  rainFog: {fileID: 2100000, guid: 1672d2b4c0382d042a90ed29400e1b58, type: 2}
+  rainFog: {fileID: 1578305627}
   rainExtent: 65536
   cloudsTex: {fileID: 2800000, guid: 308ccba8d504b80428c9d5e72b84f9b6, type: 3}
+  cloudBaseTex: {fileID: 2800000, guid: 8ea2763519e3b73419b7b006e865ce9a, type: 3}
   reflTex: {fileID: 2800000, guid: 8dc6a53f2f066924c90b437000dcc76d, type: 3}
 --- !u!1 &2013410473
 GameObject:

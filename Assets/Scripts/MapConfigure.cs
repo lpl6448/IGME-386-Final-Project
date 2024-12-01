@@ -1,3 +1,4 @@
+using System.IO;
 using Esri.ArcGISMapsSDK.Components;
 using Esri.ArcGISMapsSDK.Utils.GeoCoord;
 using Esri.GameEngine.Geometry;
@@ -20,7 +21,6 @@ public class MapConfigure : MonoBehaviour
 
     [SerializeField] private Texture2D cloudsTex;
     [SerializeField] private Texture2D cloudBaseTex;
-    [SerializeField] private Texture2D reflTex;
 
     private Texture2D rclouds;
     private Texture2D rrain;
@@ -61,7 +61,7 @@ public class MapConfigure : MonoBehaviour
             }
         rclouds.Apply();
 
-        TextureReprojector.ReprojectTexture(reflTex, extentMin, extentMax,
+        TextureReprojector.ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, extentMin, extentMax,
             rrain, originMercator - rainExtent, originMercator + rainExtent);
         for (int x = 0; x < rrain.width; x++)
             for (int y = 0; y < rrain.height; y++)
@@ -71,7 +71,7 @@ public class MapConfigure : MonoBehaviour
             }
         rrain.Apply();
 
-        TextureReprojector.ReprojectTexture(reflTex, extentMin, extentMax,
+        TextureReprojector.ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, extentMin, extentMax,
             rrain2, originMercator - cloudsExtent, originMercator + cloudsExtent);
         for (int x = 0; x < rrain2.width; x++)
             for (int y = 0; y < rrain2.height; y++)

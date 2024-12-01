@@ -2,6 +2,7 @@ using Esri.ArcGISMapsSDK.Utils.GeoCoord;
 using Esri.GameEngine.Geometry;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MapSelector : MonoBehaviour
 {
@@ -15,9 +16,15 @@ public class MapSelector : MonoBehaviour
     [SerializeField] private RectTransform mapPanel;
     [SerializeField] private CanvasGroup alphaGroup;
 
+    [SerializeField] private RawImage reflImage;
+
     private bool grow = false;
     private float growStartTime;
 
+    private void Start()
+    {
+        reflImage.texture = RasterImporter.Instance.ReflectivityTexture;
+    }
     private void LateUpdate()
     {
         if (!grow && RectTransformUtility.ScreenPointToLocalPointInRectangle(mapBounds, Input.mousePosition, canvas.worldCamera, out Vector2 point))

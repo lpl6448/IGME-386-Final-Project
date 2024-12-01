@@ -850,6 +850,7 @@ MonoBehaviour:
     y: 6500000
   mapPanel: {fileID: 352254943}
   alphaGroup: {fileID: 352254945}
+  reflImage: {fileID: 739943196}
 --- !u!225 &352254945
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -903,6 +904,52 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 432432459}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &690346753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 690346755}
+  - component: {fileID: 690346754}
+  m_Layer: 0
+  m_Name: RasterImporter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &690346754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690346753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1d7bd1bb32c37439522dbd607e3126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  reflectivityPath: Data/Raster/Reflectivity_Extent.PNG
+  ReflectivityTexture: {fileID: 2800000, guid: 8dc6a53f2f066924c90b437000dcc76d, type: 3}
+--- !u!4 &690346755
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690346753}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -2123,7 +2170,6 @@ MonoBehaviour:
   rainExtent: 65536
   cloudsTex: {fileID: 2800000, guid: 308ccba8d504b80428c9d5e72b84f9b6, type: 3}
   cloudBaseTex: {fileID: 2800000, guid: 8ea2763519e3b73419b7b006e865ce9a, type: 3}
-  reflTex: {fileID: 2800000, guid: 8dc6a53f2f066924c90b437000dcc76d, type: 3}
 --- !u!1 &2013410473
 GameObject:
   m_ObjectHideFlags: 1
@@ -2186,3 +2232,4 @@ SceneRoots:
   - {fileID: 80146285}
   - {fileID: 49907475}
   - {fileID: 1429618800}
+  - {fileID: 690346755}

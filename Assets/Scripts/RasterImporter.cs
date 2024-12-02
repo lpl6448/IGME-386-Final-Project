@@ -10,7 +10,6 @@ public class RasterImporter : MonoBehaviour
 
     [SerializeField] private string reflectivityPath;
     public Texture2D ReflectivityTexture;
-    public Texture2D TestTex;
 
     private Texture2D ImportTexture(string path, TextureFormat format)
     {

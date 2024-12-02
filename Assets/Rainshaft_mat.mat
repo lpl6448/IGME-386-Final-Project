@@ -209,8 +209,8 @@ Material:
     - _Metallic: 0
     - _MetallicRemapMax: 1
     - _MetallicRemapMin: 0
-    - _Noise_Amplitude: 0.6
-    - _Noise_Scale: 64
+    - _Noise_Amplitude: 0.4
+    - _Noise_Scale: 128
     - _NormalMapSpace: 0
     - _NormalScale: 1
     - _ObjectSpaceUVMapping: 0

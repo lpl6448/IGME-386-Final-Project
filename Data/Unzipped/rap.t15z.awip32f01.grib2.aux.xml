@@ -1,0 +1,60 @@
+<PAMDataset>
+  <Subdataset name="523">
+    <PAMDataset>
+      <Metadata>
+        <MDI key="GRIB_COMMENT">High cloud cover [%]</MDI>
+        <MDI key="GRIB_ELEMENT">HCDC</MDI>
+        <MDI key="GRIB_FORECAST_SECONDS">3600 sec</MDI>
+        <MDI key="GRIB_LONG_NAME">0[-] HCY="High cloud level"</MDI>
+        <MDI key="GRIB_REF_TIME">1733238000 sec UTC</MDI>
+        <MDI key="GRIB_SHORT_NAME">0:HCY:-</MDI>
+        <MDI key="GRIB_UNIT">[%]</MDI>
+        <MDI key="GRIB_VALID_TIME">1733241600 sec UTC</MDI>
+      </Metadata>
+      <PAMRasterBand band="1">
+        <Description>0:HCY:- [Dec  3 16:00:00 2024
+]</Description>
+        <Histograms>
+          <HistItem>
+            <HistMin>0</HistMin>
+            <HistMax>100</HistMax>
+            <BucketCount>256</BucketCount>
+            <IncludeOutOfRange>1</IncludeOutOfRange>
+            <Approximate>0</Approximate>
+            <HistCounts>57365|0|1744|0|0|1288|0|932|0|0|875|0|726|0|0|610|0|623|0|0|505|0|444|0|0|398|0|0|373|0|351|0|0|329|0|289|0|0|271|0|277|0|0|250|0|236|0|0|208|0|0|229|0|228|0|0|184|0|188|0|0|188|0|202|0|0|193|0|198|0|0|190|0|166|0|0|181|0|0|177|0|168|0|0|261|0|162|0|0|165|0|168|0|0|183|0|148|0|0|139|0|0|133|0|124|0|0|166|0|152|0|0|137|0|115|0|0|144|0|142|0|0|133|0|130|0|0|120|0|0|152|0|138|0|0|144|0|135|0|0|151|0|142|0|0|117|0|135|0|0|154|0|0|123|0|144|0|0|124|0|143|0|0|151|0|133|0|0|139|0|157|0|0|139|0|177|0|0|150|0|0|151|0|160|0|0|155|0|136|0|0|184|0|194|0|0|181|0|197|0|0|183|0|0|202|0|196|0|0|216|0|204|0|0|232|0|185|0|0|245|0|258|0|0|236|0|299|0|0|252|0|0|289|0|300|0|0|329|0|345|0|0|374|0|400|0|0|525|0|610|0|0|864|0|0|12415</HistCounts>
+          </HistItem>
+        </Histograms>
+        <Metadata>
+          <MDI key="GRIB_COMMENT">High cloud cover [%]</MDI>
+          <MDI key="GRIB_DISCIPLINE">0(Meteorological)</MDI>
+          <MDI key="GRIB_ELEMENT">HCDC</MDI>
+          <MDI key="GRIB_FORECAST_SECONDS">3600</MDI>
+          <MDI key="GRIB_IDS">CENTER=7(US National Weather Service - NCEP (WMC)) SUBCENTER=0 MASTER_TABLE=2 LOCAL_TABLE=1 SIGNF_REF_TIME=1(Start_of_Forecast) REF_TIME=2024-12-03T15:00:00Z PROD_STATUS=0(Operational) TYPE=1(Forecast)</MDI>
+          <MDI key="GRIB_PDS_PDTN">0</MDI>
+          <MDI key="GRIB_PDS_TEMPLATE_ASSEMBLED_VALUES">6 5 2 0 105 0 0 1 1 234 0 0 255 0 0</MDI>
+          <MDI key="GRIB_PDS_TEMPLATE_NUMBERS">6 5 2 0 105 0 0 0 1 0 0 0 1 234 0 0 0 0 0 255 0 0 0 0 0</MDI>
+          <MDI key="GRIB_REF_TIME">1733238000</MDI>
+          <MDI key="GRIB_SHORT_NAME">0:HCY:-</MDI>
+          <MDI key="GRIB_UNIT">[%]</MDI>
+          <MDI key="GRIB_VALID_TIME">1733241600</MDI>
+          <MDI key="STATISTICS_COVARIANCES">1525.76772793161</MDI>
+          <MDI key="STATISTICS_EXCLUDEDVALUES"></MDI>
+          <MDI key="STATISTICS_MAXIMUM">100</MDI>
+          <MDI key="STATISTICS_MEAN">24.614907988787</MDI>
+          <MDI key="STATISTICS_MEDIAN">0.000000</MDI>
+          <MDI key="STATISTICS_MINIMUM">0</MDI>
+          <MDI key="STATISTICS_SKIPFACTORX">1</MDI>
+          <MDI key="STATISTICS_SKIPFACTORY">1</MDI>
+          <MDI key="STATISTICS_STDDEV">39.061076891602</MDI>
+        </Metadata>
+        <Metadata domain="GRIB">
+          <MDI key="DRS_BINARY_SCALE_FACTOR">0</MDI>
+          <MDI key="DRS_DECIMAL_SCALE_FACTOR">0</MDI>
+          <MDI key="DRS_DRTN">40</MDI>
+          <MDI key="DRS_NBITS">7</MDI>
+          <MDI key="DRS_REF_VALUE">0.0000000000</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+</PAMDataset>

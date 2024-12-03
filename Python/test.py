@@ -1,22 +1,20 @@
-import sys
-import time
+print("Progress 0 Initializing...")
+
 import arcpy
 import os
-from osgeo import gdal
 
-raster = r"D:\Profiles\lpl6448\Downloads\rap.t00z.awip32f01.grib2"
-# arcpy.env.workspace = r"D:\Profiles\lpl6448\Downloads\rap.t00z.awip32f01.grib2"
-arcpy.env.workspace = os.getcwd()
+raster = r"C:\Users\lukel\Downloads\rap.t00z.awip32f00.grib2"
+variables = ["LCDC@LCY", "MCDC@MCY", "HCDC@HCY"] # and others eventually
 arcpy.env.overwriteOutput = True
-print("HI")
-# print(arcpy.MakeRasterLayer_management(raster, "test.tif", band_index=1))
 
-r = arcpy.Raster(raster, True)
-arcpy.MakeRasterLayer_management(r, "test", "Variable = LCDC@LCY", band_index=1)
-# arcpy.Raster("test").save(os.path.abspath("test.tif"))
-arcpy.CopyRaster_management("test", os.path.abspath("test.gdb/test2"))
+print("Progress 20 Importing raster layer...")
+multiraster = arcpy.MakeMultidimensionalRasterLayer_md(raster, variables=variables)
 
-# print(os.path.abspath("test.tif"))
-# rl.save("test.tif")
-# print(len(arcpy.Describe(rl).children))
-# arcpy.Raster(raster).save("test.tif")
+print("Progress 70 Exporting raster layers...")
+for var in variables:
+    r = arcpy.MakeMultidimensionalRasterLayer_md(multiraster, variables=var)
+    # Probably more Project function stuff here
+    arcpy.CopyRaster_management(r, os.path.abspath("output1.tif"))
+arcpy.CopyRaster_management(arcpy.MakeMultidimensionalRasterLayer_md(multiraster, variables="HCDC@HCY"), os.path.abspath("output3.tif"))
+
+print("Progress 100 Done!")

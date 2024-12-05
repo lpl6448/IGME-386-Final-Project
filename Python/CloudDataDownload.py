@@ -3,8 +3,11 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timezone
 import os
 
-# Base URL for the RAP model data
-base_url = "https://nomads.ncep.noaa.gov/pub/data/nccf/com/rap/prod/rap.20241203/"
+# Get the current date
+current_date = datetime.now().strftime('%Y%m%d')
+
+# Construct the URL with the current date
+base_url = f"https://nomads.ncep.noaa.gov/pub/data/nccf/com/rap/prod/rap.{current_date}/"
 
 # Directory to save the file
 save_directory = "Data/Unzipped"

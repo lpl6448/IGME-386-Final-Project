@@ -1,29 +1,56 @@
+print("Progress 0 Initializing...")
+
 import arcpy
 import os
 
-# Set the workspace
-arcpy.env.workspace = os.getcwd()
-grib_file = r"D:\Profiles\ijs3503\IGME-386-Final-Project\Data\Unzipped\rap.t15z.awip32f01.grib2"
+raster = os.path.abspath(r"Data\Unzipped\rap.t15z.awip32f01.grib2")
+variables = ["LCDC@LCY", "MCDC@MCY", "HCDC@HCY", "TCDC@EATM", "HGT@LFC"] 
+arcpy.env.overwriteOutput = True
 
-# Load the GRIB as a multidimensional raster
-raster = arcpy.Raster(grib_file, True)
+output_coordinate_system = arcpy.SpatialReference(3857)  # WGS_1984_Web_Mercator_Auxiliary_Sphere
+extent = arcpy.Extent(-14600000, 2600000, -6800000, 6500000)  # Specified extent
+pixel_type = "32_BIT_FLOAT"  # Pixel type
+raster_size = (2048, 1024)  # Width (columns) and Height (rows)
+cell_size = (extent.XMax - extent.XMin) / raster_size[0]  # Cell size for both X and Y
 
-print(raster.variableNames)
+i = 0
+for var in variables:
+    final_raster = os.path.abspath(f"Data/Raster/output{var}.tif")
 
-# # Variable names to extract
-# variables = ["LCDC@LCY"]
+    print(f"Progress {i * 100 // len(variables)} Importing {var}...")
+    r = arcpy.md.SubsetMultidimensionalRaster(raster, "Temp_Data/Temp" ,variables=var) # USE THIS IT'S WAY FASTER
+    # Probably more Project function stuff here
 
-# # Iterate through the raster's subdatasets (bands)
-# for variable in variables:
-#     try:
-#         # Make a raster layer using the variable name directly if it exists
-#         layer_name = f"{variable}_layer"
-#         arcpy.MakeRasterLayer_management(grib_file, layer_name, where_clause=f"Variable = '{variable}'")
+    # Set up ArcPy environment
+    print("Setting up ArcPy environment...")
+    arcpy.env.workspace = os.getcwd()
 
-#         # Save or analyze the layer
-#         output_raster = f"{arcpy.env.workspace}/{variable}.tif"
-#         arcpy.CopyRaster_management(layer_name, output_raster)
-#         print(f"Saved {variable} to {output_raster}")
+    # Reproject and adjust extent in a single step
+    print("Reprojecting raster and adjusting extent...")
 
-#     except arcpy.ExecuteError:
-#         print(f"Variable {variable} not found or issue with extraction.")
+    # Reproject and adjust extent
+    arcpy.env.overwriteOutput = True
+    r = arcpy.management.ProjectRaster(
+        in_raster=r,
+        out_raster="Temp_Data/Temp",
+        out_coor_system=output_coordinate_system,
+        resampling_type="CUBIC",  # Choose resampling method (e.g., NEAREST, BILINEAR, CUBIC)
+        geographic_transform=""
+    )
+    print(r)
+
+    # Set extent after reprojection
+    print("Setting raster extent...")
+    arcpy.env.extent = extent
+    arcpy.env.cellSize = cell_size
+    arcpy.env.resamplingMethod = "CUBIC"
+    arcpy.CopyRaster_management(r, final_raster, format="TIFF", pixel_type=pixel_type)
+
+    # Verify raster size
+    print("Verifying and setting raster size...")
+    raster_info = arcpy.Raster(final_raster)
+    actual_raster_size = (raster_info.width, raster_info.height)
+    print(f"Final raster size: {actual_raster_size}")
+    i += 1
+
+print("Progress 100 Done!")

@@ -16,6 +16,7 @@ public class MapSelector : MonoBehaviour
     [SerializeField] private RectTransform mapPanel;
     [SerializeField] private CanvasGroup alphaGroup;
     [SerializeField] private RawImage reflImage;
+    [SerializeField] private RawImage cloudsImage;
 
     [SerializeField] private RectTransform[] blackoutBoxes;
 
@@ -27,6 +28,7 @@ public class MapSelector : MonoBehaviour
     {
         reflImage.texture = RasterImporter.Instance.ReflectivityTexture;
         reflMat.SetTexture("_PrecipFlagTex", RasterImporter.Instance.PrecipFlagTexture);
+        cloudsImage.texture = RasterImporter.Instance.TotalCloudsTexture;
     }
     private void Start()
     {

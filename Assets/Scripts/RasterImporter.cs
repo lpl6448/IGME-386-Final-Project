@@ -10,8 +10,18 @@ public class RasterImporter : MonoBehaviour
 
     [SerializeField] private string reflectivityPath;
     [SerializeField] private string precipFlagPath;
+    [SerializeField] private string lowCloudsPath;
+    [SerializeField] private string midCloudsPath;
+    [SerializeField] private string highCloudsPath;
+    [SerializeField] private string totalCloudsPath;
+    [SerializeField] private string cloudLevelPath;
     public Texture2D ReflectivityTexture;
     public Texture2D PrecipFlagTexture;
+    public Texture2D LowCloudsTexture;
+    public Texture2D MidCloudsTexture;
+    public Texture2D HighCloudsTexture;
+    public Texture2D TotalCloudsTexture;
+    public Texture2D CloudLevelTexture;
 
     private Texture2D ImportTexture(string path, TextureFormat format)
     {
@@ -88,13 +98,43 @@ public class RasterImporter : MonoBehaviour
         return tex;
     }
 
-    private void Awake()
+    public void ImportTextures()
     {
-        Instance = this;
         if (File.Exists(reflectivityPath))
             ReflectivityTexture = ImportTexture(reflectivityPath, TextureFormat.R8);
         if (File.Exists(precipFlagPath))
             PrecipFlagTexture = ImportTexture(precipFlagPath, TextureFormat.R8);
+        if (File.Exists(lowCloudsPath))
+        {
+            LowCloudsTexture = ImportTexture(lowCloudsPath, TextureFormat.RFloat);
+            TextureUtility.PixelOperator(LowCloudsTexture, (x, y, c) => c / 100);
+            LowCloudsTexture.Apply();
+        }
+        if (File.Exists(midCloudsPath))
+        {
+            MidCloudsTexture = ImportTexture(midCloudsPath, TextureFormat.RFloat);
+            TextureUtility.PixelOperator(MidCloudsTexture, (x, y, c) => c / 100);
+            MidCloudsTexture.Apply();
+        }
+        if (File.Exists(highCloudsPath))
+        {
+            HighCloudsTexture = ImportTexture(highCloudsPath, TextureFormat.RFloat);
+            TextureUtility.PixelOperator(HighCloudsTexture, (x, y, c) => c / 100);
+            HighCloudsTexture.Apply();
+        }
+        if (File.Exists(totalCloudsPath))
+        {
+            TotalCloudsTexture = ImportTexture(totalCloudsPath, TextureFormat.RFloat);
+            TextureUtility.PixelOperator(TotalCloudsTexture, (x, y, c) => c / 100);
+            TotalCloudsTexture.Apply();
+        }
+        if (File.Exists(cloudLevelPath))
+            CloudLevelTexture = ImportTexture(cloudLevelPath, TextureFormat.RFloat);
+    }
+
+    private void Awake()
+    {
+        Instance = this;
     }
 }
 

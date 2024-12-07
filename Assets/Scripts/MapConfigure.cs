@@ -19,9 +19,6 @@ public class MapConfigure : MonoBehaviour
     [SerializeField] private LocalVolumetricFog rainFog;
     [SerializeField] private float rainExtent;
 
-    [SerializeField] private Texture2D cloudsTex;
-    [SerializeField] private Texture2D cloudBaseTex;
-
     private Texture2D rclouds;
     private Texture2D rrain;
     private Texture2D rrain2;
@@ -39,7 +36,7 @@ public class MapConfigure : MonoBehaviour
         float2 originMercator = (float2)new double2(originPointMercator.X, originPointMercator.Y);
 
         float2 originUV = math.unlerp(extentMin, extentMax, originMercator);
-        float height = cloudBaseTex.GetPixelBilinear(originUV.x, originUV.y).r;
+        float height = RasterImporter.Instance.CloudLevelTexture.GetPixelBilinear(originUV.x, originUV.y).r;
         if (height < 1)
             height = 1500; // Default if there is no data
         cloudsVolume.profile.TryGet(out VolumetricClouds volumetricClouds);
@@ -51,13 +48,13 @@ public class MapConfigure : MonoBehaviour
         cameraLocation.Position = new ArcGISPoint(originPoint.X, originPoint.Y, height - 300);
         cameraLocation.Rotation = new ArcGISRotation(0, 90, 0);
 
-        TextureReprojector.ReprojectTexture(cloudsTex, extentMin, extentMax,
+        TextureReprojector.ReprojectTexture(RasterImporter.Instance.LowCloudsTexture, extentMin, extentMax,
             rclouds, originMercator - cloudsExtent, originMercator + cloudsExtent);
         for (int x = 0; x < rclouds.width; x++)
             for (int y = 0; y < rclouds.height; y++)
             {
                 Color c = rclouds.GetPixel(x, y);
-                rclouds.SetPixel(x, y, new Color(c.r * 255 / 201, 1, 1, 1));
+                rclouds.SetPixel(x, y, new Color(c.r * 255 / 100, 1, 1, 1));
             }
         rclouds.Apply();
 

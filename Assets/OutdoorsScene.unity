@@ -297,7 +297,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: -876546973899608171, guid: db524b82a4138a44a83ed590e5f822b9,
     type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.2}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.29803923}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1299,6 +1299,7 @@ MonoBehaviour:
   mapPanel: {fileID: 352254943}
   alphaGroup: {fileID: 80146287}
   reflImage: {fileID: 739943196}
+  cloudsImage: {fileID: 61316079}
   blackoutBoxes:
   - {fileID: 642551702}
 --- !u!1 &432432459
@@ -1812,10 +1813,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd1d7bd1bb32c37439522dbd607e3126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reflectivityPath: Data/Raster/Reflectivity_Extent.PNG
+  reflectivityPath: Data\Raster\Reflectivity_Extent.PNG
   precipFlagPath: Data\Raster\Precipitation_Extent.PNG
+  lowCloudsPath: Data\Raster\outputLCDC@LCY.tif
+  midCloudsPath: Data\Raster\outputMCDC@MCY.tif
+  highCloudsPath: Data\Raster\outputHCDC@HCY.tif
+  totalCloudsPath: Data\Raster\outputTCDC@EATM.tif
+  cloudLevelPath: Data\Raster\outputHGT@LFC.tif
   ReflectivityTexture: {fileID: 2800000, guid: 8dc6a53f2f066924c90b437000dcc76d, type: 3}
-  PrecipFlagTexture: {fileID: 0}
+  PrecipFlagTexture: {fileID: 2800000, guid: 7749e6a1e05ee52438fac923ce74f27d, type: 3}
+  LowCloudsTexture: {fileID: 0}
+  MidCloudsTexture: {fileID: 0}
+  HighCloudsTexture: {fileID: 0}
+  TotalCloudsTexture: {fileID: 0}
+  CloudLevelTexture: {fileID: 0}
 --- !u!4 &690346755
 Transform:
   m_ObjectHideFlags: 0
@@ -4046,14 +4057,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position:
-    x: 0
-    y: 0
-    z: 0
+    x: NaN
+    y: NaN
+    z: NaN
     SRWkid: 4326
   rotation:
-    Heading: 251.13479124025915
-    Pitch: 140.26626700706572
-    Roll: 23.956978430290945
+    Heading: 128.18717149808435
+    Pitch: 78.07170031684132
+    Roll: 99.23399112269318
   surfacePlacementMode: 0
   surfacePlacementOffset: 0
 --- !u!114 &1823688470
@@ -4368,8 +4379,6 @@ MonoBehaviour:
   cloudsExtent: 105000
   rainFog: {fileID: 1578305627}
   rainExtent: 65536
-  cloudsTex: {fileID: 2800000, guid: 308ccba8d504b80428c9d5e72b84f9b6, type: 3}
-  cloudBaseTex: {fileID: 2800000, guid: 8ea2763519e3b73419b7b006e865ce9a, type: 3}
 --- !u!114 &1936473669 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4127025708277392607, guid: cdd7db5a78217304e85a0545c31850bb,

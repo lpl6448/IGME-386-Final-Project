@@ -38,6 +38,7 @@ public class PanelFlowManager : MonoBehaviour
             return;
 
         CurrentState = State.Map;
+        RasterImporter.Instance.ImportTextures();
         loadingPanel.gameObject.SetActive(false);
         mapPanel.SetActive(true);
     }

@@ -15,12 +15,12 @@ cell_size = (extent.XMax - extent.XMin) / raster_size[0]  # Cell size for both X
 
 os.makedirs("Temp_Data", exist_ok=True)
 
-i = 0
+i = 1
 for var in variables:
     final_raster = os.path.abspath(f"Data/Raster/output{var}.tif")
 
-    print(f"Progress {i * 100 // len(variables)} Importing {var}...")
-    r = arcpy.md.SubsetMultidimensionalRaster(raster, "Temp_Data/Temp" ,variables=var) # USE THIS IT'S WAY FASTER
+    print(f"Progress {i * 100 // (len(variables) + 1)} Importing {var}...")
+    r = arcpy.md.SubsetMultidimensionalRaster(raster, os.path.abspath("Temp_Data/Temp.crf") ,variables=var) # USE THIS IT'S WAY FASTER
     # Probably more Project function stuff here
 
     # Set up ArcPy environment
@@ -31,15 +31,16 @@ for var in variables:
     print("Reprojecting raster and adjusting extent...")
 
     # Reproject and adjust extent
-    arcpy.env.overwriteOutput = True
+    arcpy.env.extent = None
+    arcpy.env.cellSize = "MAXOF"
+    arcpy.env.resamplingMethod = "BILINEAR"
     r = arcpy.management.ProjectRaster(
         in_raster=r,
-        out_raster="Temp_Data/Temp",
+        out_raster=os.path.abspath("Temp_Data/Temp2.crf"),
         out_coor_system=output_coordinate_system,
-        resampling_type="CUBIC",  # Choose resampling method (e.g., NEAREST, BILINEAR, CUBIC)
+        resampling_type="BILINEAR",  # Choose resampling method (e.g., NEAREST, BILINEAR, CUBIC)
         geographic_transform=""
     )
-    print(r)
 
     # Set extent after reprojection
     print("Setting raster extent...")

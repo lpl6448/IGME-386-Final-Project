@@ -85,7 +85,10 @@ public class MapSelector : MonoBehaviour
                 alphaGroup.alpha = 1 - t;
 
                 if (t == 1)
+                {
+                    alphaGroup.blocksRaycasts = false;
                     gameObject.SetActive(false);
+                }
             }
         }
     }

@@ -10,6 +10,7 @@ public class PanelFlowManager : MonoBehaviour
     }
 
     [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private LoadingPanel loadingPanel;
     [SerializeField] private GameObject mapPanel;
 
     public State CurrentState { get; private set; }
@@ -19,14 +20,25 @@ public class PanelFlowManager : MonoBehaviour
         CurrentState = State.Settings;
         settingsPanel.SetActive(true);
         mapPanel.SetActive(false);
+        loadingPanel.gameObject.SetActive(false);
     }
-    public void ProgressToMap()
+    public void ProgressToLoading()
     {
         if (CurrentState != State.Settings)
             return;
 
-        CurrentState = State.Map;
+        CurrentState = State.Loading;
         settingsPanel.SetActive(false);
+        loadingPanel.gameObject.SetActive(true);
+        loadingPanel.Load();
+    }
+    public void ProgressToMap()
+    {
+        if (CurrentState != State.Loading)
+            return;
+
+        CurrentState = State.Map;
+        loadingPanel.gameObject.SetActive(false);
         mapPanel.SetActive(true);
     }
 }

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.esri.arcgis-maps-sdk": "file:../arcgis-maps-sdk-unity-1.6.0.tgz",
+    "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "2.5.2",
     "com.unity.feature.development": "1.0.1",
     "com.unity.render-pipelines.high-definition": "14.0.11",

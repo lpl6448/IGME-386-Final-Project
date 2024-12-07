@@ -1,3 +1,5 @@
+print("Progress 0 Initializing...")
+
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone
@@ -20,6 +22,7 @@ def find_and_download_closest_file():
     current_hour = get_current_zulu_hour()
     
     # Get the index page
+    print("Progress 20 Downloading cloud data index...")
     response = requests.get(base_url)
     if response.status_code != 200:
         print(f"Failed to access {base_url}")
@@ -61,7 +64,8 @@ def download_file(url, filename):
     if not os.path.exists(save_directory):
         os.makedirs(save_directory)
 
-    filepath = os.path.join(save_directory, filename)
+    filepath = os.path.join(save_directory, "cloudsoutput.grib2")
+    print("Progress 50 Downloading cloud data...")
     print(f"Downloading {filename} from {url}...")
 
     response = requests.get(url, stream=True)
@@ -70,6 +74,7 @@ def download_file(url, filename):
             for chunk in response.iter_content(chunk_size=1024):
                 file.write(chunk)
         print(f"Download completed: {filepath}")
+        print("Progress 100 Done!")
     else:
         print(f"Failed to download {filename}")
 

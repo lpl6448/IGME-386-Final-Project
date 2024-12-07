@@ -1,9 +1,9 @@
-print("Progress 0 Initializing...")
+print("Progress 0 Initializing processing...")
 
 import arcpy
 import os
 
-raster = os.path.abspath(r"Data\Unzipped\rap.t15z.awip32f01.grib2")
+raster = os.path.abspath(r"Data\Unzipped\cloudsoutput.grib2")
 variables = ["LCDC@LCY", "MCDC@MCY", "HCDC@HCY", "TCDC@EATM", "HGT@LFC"] 
 arcpy.env.overwriteOutput = True
 
@@ -12,6 +12,8 @@ extent = arcpy.Extent(-14600000, 2600000, -6800000, 6500000)  # Specified extent
 pixel_type = "32_BIT_FLOAT"  # Pixel type
 raster_size = (2048, 1024)  # Width (columns) and Height (rows)
 cell_size = (extent.XMax - extent.XMin) / raster_size[0]  # Cell size for both X and Y
+
+os.makedirs("Temp_Data", exist_ok=True)
 
 i = 0
 for var in variables:

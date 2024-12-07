@@ -14,7 +14,7 @@ public class PythonManager : MonoBehaviour
 
     private ConcurrentBag<PythonScriptStatus> processes = new ConcurrentBag<PythonScriptStatus>();
 
-    public PythonScriptStatus RunScript(string path, string args, PythonScriptStatus status = null)
+    public PythonScriptStatus RunScript(string path, string args = "", PythonScriptStatus status = null)
     {
         if (status == null)
             status = new PythonScriptStatus();
@@ -138,6 +138,8 @@ public class PythonScriptStatus
     public string LastErrorMessage = null;
     public bool HasExited = false;
     public int ExitCode = -1;
+
+    public bool HasFinished => HasExited || Progress >= 100;
 
     public Action<float, string> OnProgress;
     public Action<string> OnOutput;

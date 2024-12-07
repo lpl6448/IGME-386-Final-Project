@@ -1,3 +1,5 @@
+print("Progress 0 Initializing...")
+
 import os
 import arcpy
 import requests
@@ -39,13 +41,13 @@ os.makedirs(os.path.dirname(unzip_path), exist_ok=True)
 os.makedirs(os.path.dirname(final_raster_path), exist_ok=True)
 
 # Step 1: Download the file
-print("Downloading the GRIB2 file...")
+print("Progress 10 Downloading the reflectivity GRIB2 file...")
 response = requests.get(download_url, stream=True, verify=False)
 with open(download_path, 'wb') as f:
     f.write(response.content)
 
 # Step 2: Unzip the file
-print("Unzipping the file...")
+print("Progress 20 Unzipping the reflectivity file...")
 with gzip.open(download_path, 'rb') as gz_file:
     with open(unzip_path, 'wb') as out_file:
         shutil.copyfileobj(gz_file, out_file)
@@ -55,7 +57,7 @@ print("Setting up ArcPy environment...")
 arcpy.env.workspace = os.getcwd()
 
 # Step 5: Reproject and adjust extent in a single step
-print("Reprojecting raster and adjusting extent...")
+print("Progress 30 Reprojecting reflectivity raster...")
 
 # Ensure the directory exists
 os.makedirs(os.path.dirname(final_raster_path), exist_ok=True)
@@ -76,7 +78,7 @@ arcpy.management.ProjectRaster(
 )
 
 # Set extent after reprojection
-print("Setting raster extent...")
+print("Progress 40 Setting reflectivity raster extent...")
 arcpy.env.extent = extent
 arcpy.env.cellSize = (extent.YMax - extent.YMin) / 4096
 arcpy.env.resamplingMethod = "CUBIC"
@@ -108,13 +110,13 @@ os.makedirs(os.path.dirname(unzip_path_precip), exist_ok=True)
 os.makedirs(os.path.dirname(final_raster_path_precip), exist_ok=True)
 
 # Step 1: Download the file
-print("Downloading the Precipitation GRIB2 file...")
+print("Progress 55 Downloading the Precipitation GRIB2 file...")
 response = requests.get(download_url_precip, stream=True, verify=False)
 with open(download_path_precip, 'wb') as f:
     f.write(response.content)
 
 # Step 2: Unzip the file
-print("Unzipping the file...")
+print("Progress 65 Unzipping the precipitation file...")
 with gzip.open(download_path_precip, 'rb') as gz_file:
     with open(unzip_path_precip, 'wb') as out_file:
         shutil.copyfileobj(gz_file, out_file)
@@ -124,7 +126,7 @@ print("Setting up ArcPy environment...")
 arcpy.env.workspace = os.getcwd()
 
 # Step 5: Reproject and adjust extent in a single step
-print("Reprojecting raster and adjusting extent...")
+print("Progress 75 Reprojecting precipitation raster...")
 
 # Ensure the directory exists
 os.makedirs(os.path.dirname(final_raster_path_precip), exist_ok=True)
@@ -145,7 +147,7 @@ arcpy.management.ProjectRaster(
 )
 
 # Set extent after reprojection
-print("Setting raster extent...")
+print("Progress 85 Setting precipitation raster extent...")
 arcpy.env.extent = extent
 arcpy.env.cellSize = (extent.YMax - extent.YMin) / 4096
 arcpy.env.resamplingMethod = "CUBIC"
@@ -156,3 +158,4 @@ print("Verifying and setting raster size...")
 raster_info = arcpy.Raster(final_raster_path_extent_precip)
 actual_raster_size = (raster_info.width, raster_info.height)
 print(f"Final raster size: {actual_raster_size}")
+print("Progress 100 Done")

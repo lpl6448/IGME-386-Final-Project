@@ -33,50 +33,53 @@ public class PythonManager : MonoBehaviour
 
             using (Process process = new Process { StartInfo = start })
             {
-                status.Process = process;
-                process.OutputDataReceived += (sender, args) =>
+                lock (status)
                 {
-                    lock (status)
+                    status.Process = process;
+                    process.OutputDataReceived += (sender, args) =>
                     {
-                        string line = args.Data;
-                        if (line != null)
+                        lock (status)
                         {
-                            Match progressMatch = Regex.Match(line.Trim(), @"^Progress(\:|\s)+((\d+(\.\d*)?)\%?(\:|\s)*)?(.+)?$");
-                            if (progressMatch.Success)
+                            string line = args.Data;
+                            if (line != null)
                             {
-                                if (progressMatch.Groups[3].Success)
-                                    status.Progress = float.Parse(progressMatch.Groups[3].Value);
-                                if (progressMatch.Groups[6].Success)
-                                    status.LastProgressMessage = progressMatch.Groups[6].Value;
+                                Match progressMatch = Regex.Match(line.Trim(), @"^Progress(\:|\s)+((\d+(\.\d*)?)\%?(\:|\s)*)?(.+)?$");
+                                if (progressMatch.Success)
+                                {
+                                    if (progressMatch.Groups[3].Success)
+                                        status.Progress = float.Parse(progressMatch.Groups[3].Value);
+                                    if (progressMatch.Groups[6].Success)
+                                        status.LastProgressMessage = progressMatch.Groups[6].Value;
 
-                                if (status.OnProgress != null)
-                                    status.OnProgress(status.Progress, status.LastProgressMessage);
-                            }
-                            else
-                            {
-                                status.LastOutputMessage = line;
-                                if (status.OnOutput != null)
-                                    status.OnOutput(line);
+                                    if (status.OnProgress != null)
+                                        status.OnProgress(status.Progress, status.LastProgressMessage);
+                                }
+                                else
+                                {
+                                    status.LastOutputMessage = line;
+                                    if (status.OnOutput != null)
+                                        status.OnOutput(line);
+                                }
                             }
                         }
-                    }
-                };
-                process.ErrorDataReceived += (sender, args) =>
-                {
-                    lock (status)
+                    };
+                    process.ErrorDataReceived += (sender, args) =>
                     {
-                        string line = args.Data;
-                        if (line != null)
+                        lock (status)
                         {
-                            status.LastErrorMessage = line;
-                            if (status.OnError != null)
-                                status.OnError(line);
+                            string line = args.Data;
+                            if (line != null)
+                            {
+                                status.LastErrorMessage = line;
+                                if (status.OnError != null)
+                                    status.OnError(line);
+                            }
                         }
-                    }
-                };
+                    };
 
-                process.Start();
-                processes.Add(status);
+                    process.Start();
+                    processes.Add(status);
+                }
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
                 process.WaitForExit();
@@ -105,13 +108,13 @@ public class PythonManager : MonoBehaviour
     }
     private void Start()
     {
-        PythonScriptStatus status = new PythonScriptStatus(
-            (f, s) => print("Progress: " + f + " - " + s),
-            (s) => print("Output: " + s),
-            (s) => UnityEngine.Debug.LogError(s),
-            (c) => print("Process exited with code " + c)
-        );
-        RunScript("Python/test.py", "hi", status);
+        // PythonScriptStatus status = new PythonScriptStatus(
+        //     (f, s) => print("Progress: " + f + " - " + s),
+        //     (s) => print("Output: " + s),
+        //     (s) => UnityEngine.Debug.LogError(s),
+        //     (c) => print("Process exited with code " + c)
+        // );
+        // RunScript("Python/test.py", "hi", status);
     }
     private void OnDestroy()
     {
@@ -122,7 +125,7 @@ public class PythonManager : MonoBehaviour
                 status.OnOutput = null;
                 status.OnError = null;
                 status.OnExit = null;
-                status.Process.Close();
+                status.Exit();
             }
     }
 }
@@ -151,5 +154,18 @@ public class PythonScriptStatus
         OnOutput = onOutput;
         OnError = onError;
         OnExit = onExit;
+    }
+
+    public void Exit()
+    {
+        lock (this)
+            if (Process != null && Process.HandleCount > 0)
+                Process.Close();
+    }
+    public void Kill()
+    {
+        lock (this)
+            if (Process != null && Process.HandleCount > 0)
+                Process.Kill();
     }
 }

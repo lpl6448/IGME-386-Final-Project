@@ -15,22 +15,39 @@ public class MapSelector : MonoBehaviour
 
     [SerializeField] private RectTransform mapPanel;
     [SerializeField] private CanvasGroup alphaGroup;
-
     [SerializeField] private RawImage reflImage;
 
+    [SerializeField] private RectTransform[] blackoutBoxes;
+
+    private Material reflMat;
     private bool grow = false;
     private float growStartTime;
 
-    private void Start()
+    public void InitializeMap()
     {
         reflImage.texture = RasterImporter.Instance.ReflectivityTexture;
+        reflMat.SetTexture("_PrecipFlagTex", RasterImporter.Instance.PrecipFlagTexture);
+    }
+    private void Start()
+    {
+        reflMat = new Material(reflImage.material);
+        reflImage.material = reflMat;
+        InitializeMap();
     }
     private void LateUpdate()
     {
         if (!grow && RectTransformUtility.ScreenPointToLocalPointInRectangle(mapBounds, Input.mousePosition, canvas.worldCamera, out Vector2 point))
         {
             float2 t = Rect.PointToNormalized(mapBounds.rect, point);
-            if (math.all(t > 0) && math.all(t < 1))
+            bool inBlackout = false;
+            foreach (RectTransform blackout in blackoutBoxes)
+                if (RectTransformUtility.RectangleContainsScreenPoint(blackout, Input.mousePosition, canvas.worldCamera))
+                {
+                    inBlackout = true;
+                    break;
+                }
+
+            if (!inBlackout && math.all(t > 0) && math.all(t < 1))
             {
                 float2 projPoint = math.lerp(mapExtentMin, mapExtentMax, t);
                 selectionBox.anchorMin = math.unlerp(mapExtentMin, mapExtentMax, projPoint - selectionExtent);
@@ -46,7 +63,7 @@ public class MapSelector : MonoBehaviour
                     ArcGISPoint originMercator = new ArcGISPoint(projPoint.x, projPoint.y, ArcGISSpatialReference.WebMercator());
                     ArcGISPoint originPoint = GeoUtils.ProjectToSpatialReference(originMercator, MapConfigure.Instance.MapReference);
                     MapConfigure.Instance.ReconfigureMap(originPoint);
-                    
+
                     RectTransformUtility.ScreenPointToLocalPointInRectangle(mapPanel, Input.mousePosition, canvas.worldCamera, out Vector2 panelPoint);
                     mapPanel.pivot = Rect.PointToNormalized(mapPanel.rect, panelPoint);
                 }

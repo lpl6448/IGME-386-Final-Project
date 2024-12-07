@@ -9,7 +9,9 @@ public class RasterImporter : MonoBehaviour
     public static RasterImporter Instance { get; private set; }
 
     [SerializeField] private string reflectivityPath;
+    [SerializeField] private string precipFlagPath;
     public Texture2D ReflectivityTexture;
+    public Texture2D PrecipFlagTexture;
 
     private Texture2D ImportTexture(string path, TextureFormat format)
     {
@@ -91,6 +93,8 @@ public class RasterImporter : MonoBehaviour
         Instance = this;
         if (File.Exists(reflectivityPath))
             ReflectivityTexture = ImportTexture(reflectivityPath, TextureFormat.R8);
+        if (File.Exists(precipFlagPath))
+            PrecipFlagTexture = ImportTexture(precipFlagPath, TextureFormat.R8);
     }
 }
 

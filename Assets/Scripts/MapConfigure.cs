@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using Esri.ArcGISMapsSDK.Components;
 using Esri.ArcGISMapsSDK.Utils.GeoCoord;
@@ -19,17 +20,20 @@ public class MapConfigure : MonoBehaviour
     [SerializeField] private LocalVolumetricFog rainFog;
     [SerializeField] private float rainExtent;
 
-    private Texture2D rclouds;
-    private Texture2D rrain;
-    private Texture2D rrain2;
+    [SerializeField] private float2 extentMin = new float2(-14600000, 2600000);
+    [SerializeField] private float2 extentMax = new float2(-6800000, 6500000);
+
+    private List<Texture2D> textureHandles = new List<Texture2D>();
+    private Texture2D rpLowClouds;
+    private Texture2D rpMidClouds;
+    private Texture2D rpCumulonimbusMap;
+    private Texture2D rpRainFog;
+    private Texture2D rpRainMap;
 
     public ArcGISSpatialReference MapReference => map.OriginPosition.SpatialReference;
 
     public void ReconfigureMap(ArcGISPoint originPoint)
     {
-        float2 extentMin = new float2(-14600000, 2600000);
-        float2 extentMax = new float2(-6800000, 6500000);
-
         map.OriginPosition = originPoint;
 
         ArcGISPoint originPointMercator = GeoUtils.ProjectToSpatialReference(originPoint, ArcGISSpatialReference.WebMercator());
@@ -44,39 +48,54 @@ public class MapConfigure : MonoBehaviour
         float fogBuffer = 500;
         rainFog.parameters.size.z = height + fogBuffer;
         rainFog.transform.position = Vector3.up * height / 2;
-        
+
         cameraLocation.Position = new ArcGISPoint(originPoint.X, originPoint.Y, height - 300);
         cameraLocation.Rotation = new ArcGISRotation(0, 90, 0);
 
-        TextureReprojector.ReprojectTexture(RasterImporter.Instance.LowCloudsTexture, extentMin, extentMax,
-            rclouds, originMercator - cloudsExtent, originMercator + cloudsExtent);
-        for (int x = 0; x < rclouds.width; x++)
-            for (int y = 0; y < rclouds.height; y++)
-            {
-                Color c = rclouds.GetPixel(x, y);
-                rclouds.SetPixel(x, y, new Color(c.r * 255 / 100, 1, 1, 1));
-            }
-        rclouds.Apply();
+        ReprojectTexture(RasterImporter.Instance.LowCloudsTexture, rpLowClouds, originMercator, cloudsExtent);
+        TextureUtility.PixelOperator(rpLowClouds, (x, y, c) => new Color(c.r, 1, 1, 1));
 
-        TextureReprojector.ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, extentMin, extentMax,
-            rrain, originMercator - rainExtent, originMercator + rainExtent);
-        for (int x = 0; x < rrain.width; x++)
-            for (int y = 0; y < rrain.height; y++)
-            {
-                Color c = rrain.GetPixel(x, y);
-                rrain.SetPixel(x, y, new Color(1, 1, 1, c.r));
-            }
-        rrain.Apply();
+        ReprojectTexture(RasterImporter.Instance.MidCloudsTexture, rpMidClouds, originMercator, cloudsExtent);
+        TextureUtility.PixelOperator(rpMidClouds, (x, y, c) => new Color(c.r, 1, 1, 1));
 
-        TextureReprojector.ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, extentMin, extentMax,
-            rrain2, originMercator - cloudsExtent, originMercator + cloudsExtent);
-        for (int x = 0; x < rrain2.width; x++)
-            for (int y = 0; y < rrain2.height; y++)
-            {
-                Color c = rrain2.GetPixel(x, y);
-                rrain2.SetPixel(x, y, new Color(math.saturate(math.unlerp(0.01f, 0.05f, c.r)), 1, 1, 1));
-            }
-        rrain2.Apply();
+        ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, rpCumulonimbusMap, originMercator, cloudsExtent);
+        TextureUtility.MaxConvolution(rpCumulonimbusMap, 5);
+        TextureUtility.Convolution(rpCumulonimbusMap, TextureUtility.GenerateGaussianKernel(5));
+        TextureUtility.PixelOperator(rpLowClouds, (x, y, c) => new Color(math.max(c.r,
+            math.saturate(math.unlerp(0.03f, 0.06f, rpCumulonimbusMap.GetPixel(x, y).r))), 1, 1, 1));
+        TextureUtility.PixelOperator(rpCumulonimbusMap, (x, y, c) =>
+        {
+            float t = math.saturate(math.unlerp(0.03f, 0.12f, c.r));
+            if (t > 0)
+                return new Color(math.lerp(0, 1, t * t), 1, 1, 1);
+            return Color.clear;
+        });
+
+        ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, rpRainFog, originMercator, rainExtent);
+        TextureUtility.PixelOperator(rpRainFog, (x, y, c) => new Color(1, 1, 1, math.saturate(math.unlerp(0.03f, 0.23f, c.r))));
+
+        ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, rpRainMap, originMercator, cloudsExtent);
+        TextureUtility.PixelOperator(rpRainMap, (x, y, c) => new Color(math.saturate(math.unlerp(0.03f, 0.09f, c.r)), 1, 1, 1));
+
+        rpLowClouds.Apply();
+        rpMidClouds.Apply();
+        rpCumulonimbusMap.Apply();
+        rpRainFog.Apply();
+        rpRainMap.Apply();
+    }
+
+    private Texture2D CreateTexture(int resolution, TextureFormat format)
+    {
+        Texture2D tex = new Texture2D(resolution, resolution, format, false, false);
+        tex.wrapMode = TextureWrapMode.Clamp;
+        tex.filterMode = FilterMode.Bilinear;
+        textureHandles.Add(tex);
+        return tex;
+    }
+    private void ReprojectTexture(Texture2D source, Texture2D target, float2 originMercator, float extent)
+    {
+        TextureReprojector.ReprojectTexture(source, extentMin, extentMax,
+            target, originMercator - extent, originMercator + extent);
     }
 
     private void Awake()
@@ -87,26 +106,26 @@ public class MapConfigure : MonoBehaviour
     {
         cloudsVolume.profile.TryGet(out VolumetricClouds volumetricClouds);
 
-        rclouds = new Texture2D(256, 256, TextureFormat.R8, false, false);
-        rclouds.wrapMode = TextureWrapMode.Clamp;
-        volumetricClouds.cumulusMap.value = rclouds;
+        rpLowClouds = CreateTexture(256, TextureFormat.R8);
+        volumetricClouds.cumulusMap.value = rpLowClouds;
 
-        rrain = new Texture2D(256, 256, TextureFormat.RGBA32, false, false);
-        rrain.wrapMode = TextureWrapMode.Clamp;
-        rainFog.parameters.materialMask.SetTexture("_Rain_Texture", rrain);
+        rpMidClouds = CreateTexture(256, TextureFormat.R8);
+        volumetricClouds.altoStratusMap.value = rpMidClouds;
 
-        rrain2 = new Texture2D(256, 256, TextureFormat.R8, false, false);
-        rrain2.wrapMode = TextureWrapMode.Clamp;
-        volumetricClouds.rainMap.value = rrain2;
+        rpCumulonimbusMap = CreateTexture(256, TextureFormat.R8);
+        volumetricClouds.cumulonimbusMap.value = rpCumulonimbusMap;
+
+        rpRainFog = CreateTexture(512, TextureFormat.ARGB32);
+        rainFog.parameters.materialMask.SetTexture("_Rain_Texture", rpRainFog);
+
+        rpRainMap = CreateTexture(256, TextureFormat.R8);
+        volumetricClouds.rainMap.value = rpRainMap;
     }
 
     private void OnDestroy()
     {
-        if (rclouds != null)
-            Destroy(rclouds);
-        if (rrain != null)
-            Destroy(rrain);
-        if (rrain2 != null)
-            Destroy(rrain2);
+        foreach (Texture2D tex in textureHandles)
+            Destroy(tex);
+        textureHandles.Clear();
     }
 }

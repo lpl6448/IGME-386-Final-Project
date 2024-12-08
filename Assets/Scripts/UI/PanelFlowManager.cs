@@ -32,6 +32,15 @@ public class PanelFlowManager : MonoBehaviour
         loadingPanel.gameObject.SetActive(true);
         loadingPanel.Load();
     }
+    public void BypassLoading()
+    {
+        if (CurrentState != State.Settings)
+            return;
+        
+        settingsPanel.SetActive(false);
+        CurrentState = State.Loading;
+        ProgressToMap();
+    }
     public void ProgressToMap()
     {
         if (CurrentState != State.Loading)

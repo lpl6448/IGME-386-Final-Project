@@ -3,6 +3,7 @@ using UnityEngine;
 using BitMiracle.LibTiff.Classic;
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 public class RasterImporter : MonoBehaviour
 {
@@ -98,38 +99,41 @@ public class RasterImporter : MonoBehaviour
         return tex;
     }
 
+    public bool HasValidTextures()
+    {
+        string[] paths = { reflectivityPath, precipFlagPath, lowCloudsPath, midCloudsPath, highCloudsPath, totalCloudsPath, cloudLevelPath };
+        foreach (string path in paths)
+            if (!File.Exists(path))
+                return false;
+        return true;
+    }
+
     public void ImportTextures()
     {
-        if (File.Exists(reflectivityPath))
-            ReflectivityTexture = ImportTexture(reflectivityPath, TextureFormat.R8);
-        if (File.Exists(precipFlagPath))
-            PrecipFlagTexture = ImportTexture(precipFlagPath, TextureFormat.R8);
-        if (File.Exists(lowCloudsPath))
-        {
-            LowCloudsTexture = ImportTexture(lowCloudsPath, TextureFormat.RFloat);
-            TextureUtility.PixelOperator(LowCloudsTexture, (x, y, c) => c / 100);
-            LowCloudsTexture.Apply();
-        }
-        if (File.Exists(midCloudsPath))
-        {
-            MidCloudsTexture = ImportTexture(midCloudsPath, TextureFormat.RFloat);
-            TextureUtility.PixelOperator(MidCloudsTexture, (x, y, c) => c / 100);
-            MidCloudsTexture.Apply();
-        }
-        if (File.Exists(highCloudsPath))
-        {
-            HighCloudsTexture = ImportTexture(highCloudsPath, TextureFormat.RFloat);
-            TextureUtility.PixelOperator(HighCloudsTexture, (x, y, c) => c / 100);
-            HighCloudsTexture.Apply();
-        }
-        if (File.Exists(totalCloudsPath))
-        {
-            TotalCloudsTexture = ImportTexture(totalCloudsPath, TextureFormat.RFloat);
-            TextureUtility.PixelOperator(TotalCloudsTexture, (x, y, c) => c / 100);
-            TotalCloudsTexture.Apply();
-        }
-        if (File.Exists(cloudLevelPath))
-            CloudLevelTexture = ImportTexture(cloudLevelPath, TextureFormat.RFloat);
+        if (!HasValidTextures())
+            return;
+
+        ReflectivityTexture = ImportTexture(reflectivityPath, TextureFormat.R8);
+
+        PrecipFlagTexture = ImportTexture(precipFlagPath, TextureFormat.R8);
+
+        LowCloudsTexture = ImportTexture(lowCloudsPath, TextureFormat.RFloat);
+        TextureUtility.PixelOperator(LowCloudsTexture, (x, y, c) => c / 100);
+        LowCloudsTexture.Apply();
+
+        MidCloudsTexture = ImportTexture(midCloudsPath, TextureFormat.RFloat);
+        TextureUtility.PixelOperator(MidCloudsTexture, (x, y, c) => c / 100);
+        MidCloudsTexture.Apply();
+
+        HighCloudsTexture = ImportTexture(highCloudsPath, TextureFormat.RFloat);
+        TextureUtility.PixelOperator(HighCloudsTexture, (x, y, c) => c / 100);
+        HighCloudsTexture.Apply();
+
+        TotalCloudsTexture = ImportTexture(totalCloudsPath, TextureFormat.RFloat);
+        TextureUtility.PixelOperator(TotalCloudsTexture, (x, y, c) => c / 100);
+        TotalCloudsTexture.Apply();
+
+        CloudLevelTexture = ImportTexture(cloudLevelPath, TextureFormat.RFloat);
     }
 
     private void Awake()

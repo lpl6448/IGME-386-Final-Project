@@ -12,6 +12,7 @@ public class PythonSelector : MonoBehaviour
     [SerializeField] private Image validationOutline;
     [SerializeField] private TMP_Text validationText;
     [SerializeField] private Button launchButton;
+    [SerializeField] private Button bypassButton;
 
     [SerializeField] private Color validColor;
     [SerializeField] private Color testingColor;
@@ -22,6 +23,7 @@ public class PythonSelector : MonoBehaviour
     private void Start()
     {
         pathInput.text = PlayerPrefs.GetString("386-python-path", defaultPath);
+        bypassButton.interactable = RasterImporter.Instance.HasValidTextures();
     }
 
     public void ValidatePath()

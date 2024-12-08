@@ -42,13 +42,13 @@ MonoBehaviour:
     m_Value: 0
   fadeInDistance:
     m_OverrideState: 1
-    m_Value: 100
+    m_Value: 500
   numPrimarySteps:
-    m_OverrideState: 0
-    m_Value: 64
+    m_OverrideState: 1
+    m_Value: 128
   numLightSteps:
     m_OverrideState: 1
-    m_Value: 32
+    m_Value: 16
   cloudMap:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -71,18 +71,18 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   altoStratusMap:
-    m_OverrideState: 0
-    m_Value: {fileID: 2800000, guid: a6a131fff77b43449b9a41cc48314dfa, type: 3}
+    m_OverrideState: 1
+    m_Value: {fileID: 0}
     dimension: 2
   altoStratusMapMultiplier:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   cumulonimbusMap:
-    m_OverrideState: 0
-    m_Value: {fileID: 2800000, guid: a6a131fff77b43449b9a41cc48314dfa, type: 3}
+    m_OverrideState: 1
+    m_Value: {fileID: 0}
     dimension: 2
   cumulonimbusMapMultiplier:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   rainMap:
     m_OverrideState: 1
@@ -307,10 +307,10 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   ghostingReduction:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   perceptualBlending:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   shadows:
     m_OverrideState: 1

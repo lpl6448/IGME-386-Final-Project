@@ -67,7 +67,7 @@ public class MapConfigure : MonoBehaviour
         {
             float t = math.saturate(math.unlerp(0.06f, 0.13f, c.r));
             if (t > 0)
-                return new Color(math.lerp(0.33f, 1, t * t), 1, 1, 1);
+                return new Color(math.lerp(0.33f, 1, t), 1, 1, 1);
             return Color.clear;
         });
 

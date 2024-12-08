@@ -76,14 +76,14 @@ MonoBehaviour:
     dimension: 2
   altoStratusMapMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.67
   cumulonimbusMap:
     m_OverrideState: 1
     m_Value: {fileID: 0}
     dimension: 2
   cumulonimbusMapMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.8
   rainMap:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -243,7 +243,7 @@ MonoBehaviour:
     m_Value: 0.5
   densityMultiplier:
     m_OverrideState: 1
-    m_Value: 0.6
+    m_Value: 0.65
   shapeFactor:
     m_OverrideState: 1
     m_Value: 0.45
@@ -255,13 +255,13 @@ MonoBehaviour:
     m_Value: {x: 0, y: 0, z: 0}
   erosionFactor:
     m_OverrideState: 1
-    m_Value: 0.65
+    m_Value: 0.3
   erosionScale:
     m_OverrideState: 1
     m_Value: 107
   erosionNoiseType:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   ambientLightProbeDimmer:
     m_OverrideState: 0
     m_Value: 1
@@ -272,10 +272,10 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.1
   globalWindSpeed:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value:
-      mode: 1
-      customValue: 100
+      mode: 0
+      customValue: 500
       additiveValue: 0
       multiplyValue: 1
   orientation:
@@ -289,8 +289,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.25
   cloudMapSpeedMultiplier:
-    m_OverrideState: 0
-    m_Value: 0.5
+    m_OverrideState: 1
+    m_Value: 0
   shapeSpeedMultiplier:
     m_OverrideState: 0
     m_Value: 1
@@ -298,8 +298,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.25
   verticalShapeWindSpeed:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: -500
   verticalErosionWindSpeed:
     m_OverrideState: 0
     m_Value: 0
@@ -394,14 +394,14 @@ MonoBehaviour:
       m_OverrideState: 1
       m_Value: 0
     opacityB:
-      m_OverrideState: 0
+      m_OverrideState: 1
       m_Value: 0
     opacityA:
-      m_OverrideState: 0
+      m_OverrideState: 1
       m_Value: 0
     altitude:
-      m_OverrideState: 0
-      m_Value: 2000
+      m_OverrideState: 1
+      m_Value: 5000
     rotation:
       m_OverrideState: 0
       m_Value: 0
@@ -438,8 +438,8 @@ MonoBehaviour:
       m_OverrideState: 0
       m_Value: 6
     thickness:
-      m_OverrideState: 0
-      m_Value: 0.5
+      m_OverrideState: 1
+      m_Value: 1
     ambientProbeDimmer:
       m_OverrideState: 0
       m_Value: 1
@@ -454,17 +454,17 @@ MonoBehaviour:
       m_OverrideState: 1
       m_Value: 0
     opacityG:
-      m_OverrideState: 0
+      m_OverrideState: 1
       m_Value: 0
     opacityB:
       m_OverrideState: 1
       m_Value: 0
     opacityA:
-      m_OverrideState: 0
+      m_OverrideState: 1
       m_Value: 0
     altitude:
       m_OverrideState: 1
-      m_Value: 6000
+      m_Value: 8000
     rotation:
       m_OverrideState: 0
       m_Value: 0

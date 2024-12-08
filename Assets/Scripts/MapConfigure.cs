@@ -52,6 +52,14 @@ public class MapConfigure : MonoBehaviour
         cameraLocation.Position = new ArcGISPoint(originPoint.X, originPoint.Y, height - 300);
         cameraLocation.Rotation = new ArcGISRotation(0, 90, 0);
 
+        float midCloudsAtOrigin = RasterImporter.Instance.MidCloudsTexture.GetPixelBilinear(originUV.x, originUV.y).r;
+        float highCloudsAtOrigin = RasterImporter.Instance.HighCloudsTexture.GetPixelBilinear(originUV.x, originUV.y).r;
+        cloudsVolume.profile.TryGet(out CloudLayer cloudLayer);
+        cloudLayer.layerA.opacityR.value = math.remap(0, 0.67f, 0, 1, midCloudsAtOrigin);
+        cloudLayer.layerA.opacityG.value = math.remap(0.4f, 1, 0, 0.5f, midCloudsAtOrigin);
+        cloudLayer.layerB.opacityB.value = math.remap(0, 0.33f, 0, 0.75f, highCloudsAtOrigin);
+        cloudLayer.layerB.opacityA.value = math.remap(0.1f, 1, 0, 1, math.pow(highCloudsAtOrigin, 2));
+
         ReprojectTexture(RasterImporter.Instance.LowCloudsTexture, rpLowClouds, originMercator, cloudsExtent);
         TextureUtility.PixelOperator(rpLowClouds, (x, y, c) => new Color(c.r, 1, 1, 1));
 

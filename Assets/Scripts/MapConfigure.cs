@@ -56,7 +56,7 @@ public class MapConfigure : MonoBehaviour
         TextureUtility.PixelOperator(rpLowClouds, (x, y, c) => new Color(c.r, 1, 1, 1));
 
         ReprojectTexture(RasterImporter.Instance.MidCloudsTexture, rpMidClouds, originMercator, cloudsExtent);
-        TextureUtility.PixelOperator(rpMidClouds, (x, y, c) => new Color(c.r, 1, 1, 1));
+        TextureUtility.PixelOperator(rpMidClouds, (x, y, c) => new Color(c.r >= 0.2f ? c.r : 0, 1, 1, 1));
 
         ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, rpCumulonimbusMap, originMercator, cloudsExtent);
         TextureUtility.MaxConvolution(rpCumulonimbusMap, 5);
@@ -65,9 +65,9 @@ public class MapConfigure : MonoBehaviour
             math.saturate(math.unlerp(0.03f, 0.06f, rpCumulonimbusMap.GetPixel(x, y).r))), 1, 1, 1));
         TextureUtility.PixelOperator(rpCumulonimbusMap, (x, y, c) =>
         {
-            float t = math.saturate(math.unlerp(0.03f, 0.12f, c.r));
+            float t = math.saturate(math.unlerp(0.06f, 0.13f, c.r));
             if (t > 0)
-                return new Color(math.lerp(0, 1, t * t), 1, 1, 1);
+                return new Color(math.lerp(0.33f, 1, t * t), 1, 1, 1);
             return Color.clear;
         });
 

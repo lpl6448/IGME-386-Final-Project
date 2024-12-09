@@ -54,6 +54,16 @@ public class PanelFlowManager : MonoBehaviour
         CurrentState = State.Loading;
         ProgressToMap();
     }
+    public void BackToMap()
+    {
+        if (CurrentState != State.Simulation)
+            return;
+        
+        CurrentState = State.Map;
+        simulationPanel.gameObject.SetActive(false);
+        mapPanel.gameObject.SetActive(true);
+        mapPanel.InitializeMap();
+    }
     public void ProgressToMap()
     {
         if (CurrentState != State.Loading)

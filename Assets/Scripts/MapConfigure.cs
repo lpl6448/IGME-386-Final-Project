@@ -45,9 +45,10 @@ public class MapConfigure : MonoBehaviour
             height = 1500; // Default if there is no data
         cloudsVolume.profile.TryGet(out VolumetricClouds volumetricClouds);
         volumetricClouds.bottomAltitude.value = height;
-        float fogBuffer = 500;
-        rainFog.parameters.size.z = height + fogBuffer;
-        rainFog.transform.position = Vector3.up * height / 2;
+        float fogBufferUp = 500;
+        float fogBufferDown = 1000;
+        rainFog.parameters.size.z = height + fogBufferUp + fogBufferDown;
+        rainFog.transform.position = Vector3.up * (-fogBufferDown + height + fogBufferUp) / 2;
 
         cameraLocation.Position = new ArcGISPoint(originPoint.X, originPoint.Y, height - 300);
         cameraLocation.Rotation = new ArcGISRotation(0, 90, 0);

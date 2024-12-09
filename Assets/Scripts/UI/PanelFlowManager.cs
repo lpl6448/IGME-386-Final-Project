@@ -7,11 +7,13 @@ public class PanelFlowManager : MonoBehaviour
         Settings,
         Loading,
         Map,
+        Simulation,
     }
 
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private LoadingPanel loadingPanel;
-    [SerializeField] private GameObject mapPanel;
+    [SerializeField] private MapSelector mapPanel;
+    [SerializeField] private GameObject simulationPanel;
 
     public State CurrentState { get; private set; }
 
@@ -19,8 +21,9 @@ public class PanelFlowManager : MonoBehaviour
     {
         CurrentState = State.Settings;
         settingsPanel.SetActive(true);
-        mapPanel.SetActive(false);
+        mapPanel.gameObject.SetActive(false);
         loadingPanel.gameObject.SetActive(false);
+        simulationPanel.gameObject.SetActive(false);
     }
     public void ProgressToLoading()
     {
@@ -31,6 +34,16 @@ public class PanelFlowManager : MonoBehaviour
         settingsPanel.SetActive(false);
         loadingPanel.gameObject.SetActive(true);
         loadingPanel.Load();
+    }
+    public void BackToSettings()
+    {
+        if (CurrentState == State.Settings)
+            return;
+        
+        CurrentState = State.Settings;
+        settingsPanel.SetActive(true);
+        loadingPanel.gameObject.SetActive(false);
+        simulationPanel.gameObject.SetActive(false);
     }
     public void BypassLoading()
     {
@@ -49,6 +62,16 @@ public class PanelFlowManager : MonoBehaviour
         CurrentState = State.Map;
         RasterImporter.Instance.ImportTextures();
         loadingPanel.gameObject.SetActive(false);
-        mapPanel.SetActive(true);
+        mapPanel.gameObject.SetActive(true);
+        mapPanel.InitializeMap();
+    }
+    public void ProgressToSimulation()
+    {
+        if (CurrentState != State.Map)
+            return;
+        
+        CurrentState = State.Simulation;
+        mapPanel.gameObject.SetActive(false);
+        simulationPanel.gameObject.SetActive(true);
     }
 }

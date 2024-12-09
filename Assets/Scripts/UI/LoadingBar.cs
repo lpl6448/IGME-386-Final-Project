@@ -48,6 +48,9 @@ public class LoadingBar : MonoBehaviour
         negativeFillImage.fillAmount = 1;
         barColorImage.color = GetColorFromType(ColorType.InProgress);
         statusText.text = "";
+        stageStart = 0;
+        stageEnd = 0;
+        stageLinkedScripts = null;
     }
 
     private void Update()

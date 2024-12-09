@@ -161,13 +161,13 @@ public class PythonScriptStatus
     public void Exit()
     {
         lock (this)
-            if (Process != null && Process.HandleCount > 0)
+            if (Process != null)
                 Process.Close();
     }
     public void Kill()
     {
         lock (this)
-            if (Process != null && Process.HandleCount > 0)
+            if (Process != null)
                 Process.Kill();
     }
 }

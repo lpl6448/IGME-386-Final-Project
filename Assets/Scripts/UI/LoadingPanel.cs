@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,26 +14,40 @@ public class LoadingPanel : MonoBehaviour
     }
 
     [SerializeField] private UnityEvent onSuccess;
+    [SerializeField] private UnityEvent onCancel;
 
     public LoadState CurrentState { get; private set; }
 
-    public LoadingBar Radar;
-    public LoadingBar Clouds;
+    [SerializeField] private LoadingBar radar;
+    [SerializeField] private LoadingBar clouds;
+    [SerializeField] private TMP_Text loadingText;
 
     private bool[] attemptsSuccesses = new bool[2];
     private LoadState radarState;
     private LoadState cloudsState;
+    private List<PythonScriptStatus> activeScripts = new List<PythonScriptStatus>();
 
     public void Load()
     {
         StartCoroutine(LoadCrt());
     }
+    public void Cancel()
+    {
+        radar.Initialize();
+        clouds.Initialize();
+        foreach (PythonScriptStatus status in activeScripts)
+            status.Exit();
+        StopAllCoroutines();
+
+        onCancel.Invoke();
+    }
 
     private IEnumerator LoadCrt()
     {
+        loadingText.text = "Loading weather data...";
         CurrentState = LoadState.InProgress;
-        Radar.Initialize();
-        Clouds.Initialize();
+        radar.Initialize();
+        clouds.Initialize();
 
         StartCoroutine(RadarCrt());
         StartCoroutine(CloudsCrt());
@@ -47,18 +63,23 @@ public class LoadingPanel : MonoBehaviour
 
         if (CurrentState == LoadState.Success)
         {
+            loadingText.text = "Finishing up...";
             yield return new WaitForSeconds(1);
             onSuccess.Invoke();
+        }
+        else if (CurrentState == LoadState.Failure)
+        {
+            loadingText.text = "Failed!";
         }
     }
     private IEnumerator RadarCrt()
     {
         radarState = LoadState.InProgress;
 
-        yield return RunScriptMultipleAttempts(Radar, 0, 1, 0, "Python/DataProcessing.py");
+        yield return RunScriptMultipleAttempts(radar, 0, 1, 0, "Python/DataProcessing.py");
         if (!attemptsSuccesses[0])
         {
-            Radar.OverrideStatus("Failed to download and process data!", LoadingBar.ColorType.Failure);
+            radar.OverrideStatus("Failed to download and process data!", LoadingBar.ColorType.Failure);
             radarState = LoadState.Failure;
             yield break;
         }
@@ -70,22 +91,24 @@ public class LoadingPanel : MonoBehaviour
     {
         cloudsState = LoadState.InProgress;
 
-        yield return RunScriptMultipleAttempts(Clouds, 0, 0.3f, 1, "Python/CloudDataDownload.py");
+        yield return RunScriptMultipleAttempts(clouds, 0, 0.3f, 1, "Python/CloudDataDownload.py");
         if (!attemptsSuccesses[1])
         {
-            Clouds.OverrideStatus("Failed to download data!", LoadingBar.ColorType.Failure);
+            clouds.OverrideStatus("Failed to download data!", LoadingBar.ColorType.Failure);
             cloudsState = LoadState.Failure;
             yield break;
         }
 
         PythonScriptStatus status = PythonManager.Instance.RunScript("Python/CloudDataVariablesProcessing.py");
-        Clouds.StartStage(0.3f, 1, status);
+        activeScripts.Add(status);
+        clouds.StartStage(0.3f, 1, status);
         while (!status.HasFinished)
             yield return null;
+        activeScripts.Remove(status);
 
         if (status.ExitCode > 0)
         {
-            Clouds.OverrideStatus("Failed to process data!", LoadingBar.ColorType.Failure);
+            clouds.OverrideStatus("Failed to process data!", LoadingBar.ColorType.Failure);
             cloudsState = LoadState.Failure;
             yield break;
         }
@@ -99,10 +122,12 @@ public class LoadingPanel : MonoBehaviour
         for (int attempt = 0; attempt < 3; attempt++)
         {
             PythonScriptStatus status = PythonManager.Instance.RunScript(path, args);
+            activeScripts.Add(status);
             bar.StartStage(start, end, status);
 
             while (!status.HasFinished)
                 yield return null;
+            activeScripts.Remove(status);
 
             if (status.ExitCode > 0)
             {

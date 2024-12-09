@@ -2,11 +2,13 @@ using Esri.ArcGISMapsSDK.Utils.GeoCoord;
 using Esri.GameEngine.Geometry;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class MapSelector : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
+    [SerializeField] private UnityEvent onExit;
     [SerializeField] private RectTransform mapBounds;
     [SerializeField] private RectTransform selectionBox;
     [SerializeField] private float selectionExtent;
@@ -26,16 +28,22 @@ public class MapSelector : MonoBehaviour
 
     public void InitializeMap()
     {
+        reflMat = new Material(reflImage.material);
+        reflImage.material = reflMat;
+        
         reflImage.texture = RasterImporter.Instance.ReflectivityTexture;
         reflMat.SetTexture("_PrecipFlagTex", RasterImporter.Instance.PrecipFlagTexture);
         cloudsImage.texture = RasterImporter.Instance.TotalCloudsTexture;
+
+        mapPanel.localScale = Vector3.one;
+        alphaGroup.alpha = 1;
     }
-    private void Start()
+    public void Reset()
     {
-        reflMat = new Material(reflImage.material);
-        reflImage.material = reflMat;
-        InitializeMap();
+        grow = false;
+        growStartTime = -1;
     }
+
     private void LateUpdate()
     {
         if (!grow && RectTransformUtility.ScreenPointToLocalPointInRectangle(mapBounds, Input.mousePosition, canvas.worldCamera, out Vector2 point))
@@ -88,8 +96,8 @@ public class MapSelector : MonoBehaviour
 
                 if (t == 1)
                 {
-                    alphaGroup.blocksRaycasts = false;
-                    gameObject.SetActive(false);
+                    grow = false;
+                    onExit.Invoke();
                 }
             }
         }

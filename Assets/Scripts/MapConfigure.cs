@@ -3,6 +3,7 @@ using System.IO;
 using Esri.ArcGISMapsSDK.Components;
 using Esri.ArcGISMapsSDK.Utils.GeoCoord;
 using Esri.GameEngine.Geometry;
+using Esri.Unity;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -32,7 +33,13 @@ public class MapConfigure : MonoBehaviour
 
     public ArcGISSpatialReference MapReference => map.OriginPosition.SpatialReference;
 
-    public void ReconfigureMap(ArcGISPoint originPoint)
+    public void ReconfigureMapAtCameraPosition()
+    {
+        ArcGISPoint originPos = cameraLocation.Position;
+        originPos = new ArcGISPoint(originPos.X, originPos.Y, originPos.SpatialReference);
+        ReconfigureMap(originPos, false);
+    }
+    public void ReconfigureMap(ArcGISPoint originPoint, bool resetCamera = true)
     {
         map.OriginPosition = originPoint;
 
@@ -50,8 +57,11 @@ public class MapConfigure : MonoBehaviour
         rainFog.parameters.size.z = height + fogBufferUp + fogBufferDown;
         rainFog.transform.position = Vector3.up * (-fogBufferDown + height + fogBufferUp) / 2;
 
-        cameraLocation.Position = new ArcGISPoint(originPoint.X, originPoint.Y, height - 300);
-        cameraLocation.Rotation = new ArcGISRotation(0, 90, 0);
+        if (resetCamera)
+        {
+            cameraLocation.Position = new ArcGISPoint(originPoint.X, originPoint.Y, height - 300);
+            cameraLocation.Rotation = new ArcGISRotation(0, 90, 0);
+        }
 
         float midCloudsAtOrigin = RasterImporter.Instance.MidCloudsTexture.GetPixelBilinear(originUV.x, originUV.y).r;
         float highCloudsAtOrigin = RasterImporter.Instance.HighCloudsTexture.GetPixelBilinear(originUV.x, originUV.y).r;
@@ -103,8 +113,24 @@ public class MapConfigure : MonoBehaviour
     }
     private void ReprojectTexture(Texture2D source, Texture2D target, float2 originMercator, float extent)
     {
+        ArcGISPoint o = new ArcGISPoint(originMercator.x, originMercator.y, ArcGISSpatialReference.WebMercator());
+        ArcGISPoint nx = o.Clone() as ArcGISPoint;
+        ArcGISPoint ny = o.Clone() as ArcGISPoint;
+        ArcGISPoint px = o.Clone() as ArcGISPoint;
+        ArcGISPoint py = o.Clone() as ArcGISPoint;
+        nx = MovePoint(nx, extent, 270);
+        ny = MovePoint(ny, extent, 180);
+        px = MovePoint(px, extent, 90);
+        py = MovePoint(py, extent, 0);
         TextureReprojector.ReprojectTexture(source, extentMin, extentMax,
-            target, originMercator - extent, originMercator + extent);
+            target, new float2((float)nx.X, (float)ny.Y), new float2((float)px.X, (float)py.Y));
+    }
+    private ArcGISPoint MovePoint(ArcGISPoint p, float meters, float deg)
+    {
+        ArcGISMutableArray<ArcGISPoint> a = new ArcGISMutableArray<ArcGISPoint>();
+        a.Add(p);
+        return ArcGISGeometryEngine.MoveGeodetic(a, meters, ArcGISUnit.FromWKID((int)ArcGISLinearUnitId.Meters) as ArcGISLinearUnit,
+            deg, ArcGISUnit.FromWKID((int)ArcGISAngularUnitId.Degrees) as ArcGISAngularUnit, ArcGISGeodeticCurveType.Geodesic).First();
     }
 
     private void Awake()

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -26,6 +28,7 @@ public class LoadingPanel : MonoBehaviour
     private LoadState radarState;
     private LoadState cloudsState;
     private List<PythonScriptStatus> activeScripts = new List<PythonScriptStatus>();
+    private DateTime startTimestamp;
 
     public void Load()
     {
@@ -46,8 +49,11 @@ public class LoadingPanel : MonoBehaviour
     {
         loadingText.text = "Loading weather data...";
         CurrentState = LoadState.InProgress;
+        if (File.Exists(RasterImporter.Instance.TimestampPath))
+            File.Delete(RasterImporter.Instance.TimestampPath);
         radar.Initialize();
         clouds.Initialize();
+        startTimestamp = DateTime.UtcNow;
 
         StartCoroutine(RadarCrt());
         StartCoroutine(CloudsCrt());
@@ -64,6 +70,7 @@ public class LoadingPanel : MonoBehaviour
         if (CurrentState == LoadState.Success)
         {
             loadingText.text = "Finishing up...";
+            File.WriteAllText(RasterImporter.Instance.TimestampPath, startTimestamp.ToString());
             yield return new WaitForSeconds(1);
             onSuccess.Invoke();
         }

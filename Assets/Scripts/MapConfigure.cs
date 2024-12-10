@@ -34,7 +34,7 @@ public class MapConfigure : MonoBehaviour
     private Texture2D rpCumulonimbusMap;
     private Texture2D rpReflFog;
     private Texture2D rpRainMap;
-    public Texture2D rpSnowMap;
+    private Texture2D rpSnowMap;
 
     public ArcGISSpatialReference MapReference => map.OriginPosition.SpatialReference;
 

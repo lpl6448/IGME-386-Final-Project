@@ -3,7 +3,6 @@ using UnityEngine;
 using BitMiracle.LibTiff.Classic;
 using System;
 using System.Text;
-using System.Collections.Generic;
 
 public class RasterImporter : MonoBehaviour
 {
@@ -16,6 +15,7 @@ public class RasterImporter : MonoBehaviour
     [SerializeField] private string highCloudsPath;
     [SerializeField] private string totalCloudsPath;
     [SerializeField] private string cloudLevelPath;
+    public string TimestampPath;
     public Texture2D ReflectivityTexture;
     public Texture2D PrecipFlagTexture;
     public Texture2D LowCloudsTexture;
@@ -23,6 +23,7 @@ public class RasterImporter : MonoBehaviour
     public Texture2D HighCloudsTexture;
     public Texture2D TotalCloudsTexture;
     public Texture2D CloudLevelTexture;
+    public DateTime Timestamp;
 
     private Texture2D ImportTexture(string path, TextureFormat format)
     {
@@ -101,7 +102,7 @@ public class RasterImporter : MonoBehaviour
 
     public bool HasValidTextures()
     {
-        string[] paths = { reflectivityPath, precipFlagPath, lowCloudsPath, midCloudsPath, highCloudsPath, totalCloudsPath, cloudLevelPath };
+        string[] paths = { reflectivityPath, precipFlagPath, lowCloudsPath, midCloudsPath, highCloudsPath, totalCloudsPath, cloudLevelPath, TimestampPath };
         foreach (string path in paths)
             if (!File.Exists(path))
                 return false;
@@ -134,6 +135,8 @@ public class RasterImporter : MonoBehaviour
         TotalCloudsTexture.Apply();
 
         CloudLevelTexture = ImportTexture(cloudLevelPath, TextureFormat.RFloat);
+
+        Timestamp = DateTime.Parse(File.ReadAllText(TimestampPath));
     }
 
     private void Awake()

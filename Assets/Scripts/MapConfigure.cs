@@ -20,6 +20,10 @@ public class MapConfigure : MonoBehaviour
     [SerializeField] private float cloudsExtent;
     [SerializeField] private LocalVolumetricFog rainFog;
     [SerializeField] private float rainExtent;
+    [SerializeField][ColorUsage(false, true)] private Color rainFogColorMultiplier;
+    [SerializeField][ColorUsage(false, true)] private Color snowFogColorMultiplier;
+    [SerializeField] private float snowFogDensityMultiplier;
+    [SerializeField] private float reflMulFactor;
 
     [SerializeField] private float2 extentMin = new float2(-14600000, 2600000);
     [SerializeField] private float2 extentMax = new float2(-6800000, 6500000);
@@ -28,8 +32,9 @@ public class MapConfigure : MonoBehaviour
     private Texture2D rpLowClouds;
     private Texture2D rpMidClouds;
     private Texture2D rpCumulonimbusMap;
-    private Texture2D rpRainFog;
+    private Texture2D rpReflFog;
     private Texture2D rpRainMap;
+    public Texture2D rpSnowMap;
 
     public ArcGISSpatialReference MapReference => map.OriginPosition.SpatialReference;
 
@@ -100,17 +105,34 @@ public class MapConfigure : MonoBehaviour
             // return Color.clear;
         });
 
-        ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, rpRainFog, originMercator, rainExtent);
-        TextureUtility.PixelOperator(rpRainFog, (x, y, c) => new Color(1, 1, 1, math.saturate(math.unlerp(0.03f, 0.23f, c.r))));
-
         ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, rpRainMap, originMercator, cloudsExtent);
         TextureUtility.PixelOperator(rpRainMap, (x, y, c) => new Color(math.saturate(math.unlerp(0.03f, 0.09f, c.r)), 1, 1, 1));
+
+        ReprojectTexture(RasterImporter.Instance.PrecipFlagTexture, rpSnowMap, originMercator, rainExtent, false);
+        TextureUtility.PixelOperator(rpSnowMap, (x, y, c) =>
+        {
+            return new Color(math.abs(c.r - 3 / 255f) < 0.5f / 255f ? 1 : 0, 1, 1, 1);
+        });
+        TextureUtility.MaxConvolution(rpSnowMap, 3);
+        TextureUtility.Convolution(rpSnowMap, TextureUtility.GenerateGaussianKernel(5));
+
+        ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, rpReflFog, originMercator, rainExtent);
+        TextureUtility.PixelOperator(rpReflFog, (x, y, c) =>
+        {
+            Color baseColor = new Color(1, 1, 1, math.saturate(math.unlerp(0.03f, 0.23f, c.r)));
+            float snowAmount = rpSnowMap.GetPixelBilinear((x + 0.5f) / rpReflFog.width, (y + 0.5f) / rpReflFog.height).r;
+            Color snowMul = Color.Lerp(new Color(rainFogColorMultiplier.r, rainFogColorMultiplier.g, rainFogColorMultiplier.b, 1),
+                new Color(snowFogColorMultiplier.r, snowFogColorMultiplier.g, snowFogColorMultiplier.b, snowFogDensityMultiplier), snowAmount);
+            float reflMul = (c.r - reflMulFactor) * (c.r - reflMulFactor) / reflMulFactor / reflMulFactor;
+            return new Color(baseColor.r * reflMul, baseColor.g * reflMul, baseColor.b * reflMul, baseColor.a) * snowMul;
+        });
 
         rpLowClouds.Apply();
         rpMidClouds.Apply();
         rpCumulonimbusMap.Apply();
-        rpRainFog.Apply();
+        rpReflFog.Apply();
         rpRainMap.Apply();
+        rpSnowMap.Apply();
     }
 
     private Texture2D CreateTexture(int resolution, TextureFormat format)
@@ -121,7 +143,7 @@ public class MapConfigure : MonoBehaviour
         textureHandles.Add(tex);
         return tex;
     }
-    private void ReprojectTexture(Texture2D source, Texture2D target, float2 originMercator, float extent)
+    private void ReprojectTexture(Texture2D source, Texture2D target, float2 originMercator, float extent, bool bilinear = true)
     {
         ArcGISPoint o = new ArcGISPoint(originMercator.x, originMercator.y, ArcGISSpatialReference.WebMercator());
         ArcGISPoint nx = o.Clone() as ArcGISPoint;
@@ -132,8 +154,12 @@ public class MapConfigure : MonoBehaviour
         ny = MovePoint(ny, extent, 180);
         px = MovePoint(px, extent, 90);
         py = MovePoint(py, extent, 0);
-        TextureReprojector.ReprojectTexture(source, extentMin, extentMax,
-            target, new float2((float)nx.X, (float)ny.Y), new float2((float)px.X, (float)py.Y));
+        if (bilinear)
+            TextureReprojector.ReprojectTexture(source, extentMin, extentMax,
+                target, new float2((float)nx.X, (float)ny.Y), new float2((float)px.X, (float)py.Y));
+        else
+            TextureReprojector.ReprojectTextureNearestNeighbor(source, extentMin, extentMax,
+                target, new float2((float)nx.X, (float)ny.Y), new float2((float)px.X, (float)py.Y));
     }
     private ArcGISPoint MovePoint(ArcGISPoint p, float meters, float deg)
     {
@@ -160,11 +186,13 @@ public class MapConfigure : MonoBehaviour
         rpCumulonimbusMap = CreateTexture(256, TextureFormat.R8);
         volumetricClouds.cumulonimbusMap.value = rpCumulonimbusMap;
 
-        rpRainFog = CreateTexture(512, TextureFormat.ARGB32);
-        rainFog.parameters.materialMask.SetTexture("_Rain_Texture", rpRainFog);
+        rpReflFog = CreateTexture(512, TextureFormat.RGBAHalf);
+        rainFog.parameters.materialMask.SetTexture("_Rain_Texture", rpReflFog);
 
         rpRainMap = CreateTexture(256, TextureFormat.R8);
         volumetricClouds.rainMap.value = rpRainMap;
+
+        rpSnowMap = CreateTexture(Mathf.RoundToInt(rainExtent * 2 / 1000), TextureFormat.R8); // radar resolution ~1km
     }
 
     private void OnDestroy()

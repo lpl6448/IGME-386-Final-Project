@@ -5215,7 +5215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parameters:
     albedo: {r: 1, g: 1, b: 1, a: 1}
-    meanFreePath: 130
+    meanFreePath: 170
     blendingMode: 1
     priority: 0
     anisotropy: 0
@@ -5940,12 +5940,17 @@ MonoBehaviour:
   cloudsExtent: 145000
   rainFog: {fileID: 1578305627}
   rainExtent: 75000
+  rainFogColorMultiplier: {r: 1.7814789, g: 1.7814789, b: 1.7814789, a: 0}
+  snowFogColorMultiplier: {r: 4.2370954, g: 4.2370954, b: 4.2370954, a: 0}
+  snowFogDensityMultiplier: 1.8
+  reflMulFactor: 0.6666667
   extentMin:
     x: -14600000
     y: 2600000
   extentMax:
     x: -6800000
     y: 6500000
+  rpSnowMap: {fileID: 0}
 --- !u!114 &1936473669 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4127025708277392607, guid: cdd7db5a78217304e85a0545c31850bb,

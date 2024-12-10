@@ -138,19 +138,20 @@ if os.path.exists(final_raster_path_precip):
 
 # Reproject and adjust extent
 arcpy.env.overwriteOutput = True
+arcpy.env.resamplingMethod = "NEAREST"
 arcpy.management.ProjectRaster(
     in_raster=unzip_path_precip,
     out_raster=final_raster_path_precip,
     out_coor_system=output_coordinate_system,
-    resampling_type="CUBIC",  # Choose resampling method (e.g., NEAREST, BILINEAR, CUBIC)
+    resampling_type="NEAREST",  # Choose resampling method (e.g., NEAREST, BILINEAR, CUBIC)
     geographic_transform=""
 )
 
 # Set extent after reprojection
 print("Progress 85 Setting precipitation raster extent...")
 arcpy.env.extent = extent
-arcpy.env.cellSize = (extent.YMax - extent.YMin) / 4096
-arcpy.env.resamplingMethod = "CUBIC"
+arcpy.env.cellSize = "MAXOF" # do not perform any scaling for PrecipFlag since we don't want to resample it
+arcpy.env.resamplingMethod = "NEAREST"
 arcpy.CopyRaster_management(final_raster_path_precip, os.path.abspath(final_raster_path_extent_precip), format="PNG", pixel_type=pixel_type)
 
 # Step 6: Verify raster size

@@ -18,6 +18,17 @@ public class TextureReprojector : MonoBehaviour
                 newTex.SetPixel(x, y, baseTex.GetPixelBilinear(baseTexUV.x, baseTexUV.y));
             }
     }
+    public static void ReprojectTextureNearestNeighbor(Texture2D baseTex, float2 baseMin, float2 baseMax,
+        Texture2D newTex, float2 newMin, float2 newMax)
+    {
+        for (int x = 0; x < newTex.width; x++)
+            for (int y = 0; y < newTex.height; y++)
+            {
+                float2 newTexUV = (new float2(x, y) + 0.5f) / new float2(newTex.width, newTex.height);
+                float2 baseTexUV = math.unlerp(baseMin, baseMax, math.lerp(newMin, newMax, newTexUV));
+                newTex.SetPixel(x, y, baseTex.GetPixel(Mathf.RoundToInt(baseTexUV.x * baseTex.width), Mathf.RoundToInt(baseTexUV.y * baseTex.height)));
+            }
+    }
 
     [SerializeField] private ArcGISMapComponent map;
     [SerializeField] private Texture2D baseTex;

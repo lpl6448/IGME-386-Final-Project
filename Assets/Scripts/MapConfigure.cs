@@ -78,16 +78,26 @@ public class MapConfigure : MonoBehaviour
         TextureUtility.PixelOperator(rpMidClouds, (x, y, c) => new Color(c.r >= 0.2f ? c.r : 0, 1, 1, 1));
 
         ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, rpCumulonimbusMap, originMercator, cloudsExtent);
-        TextureUtility.MaxConvolution(rpCumulonimbusMap, 5);
+        TextureUtility.MaxConvolution(rpCumulonimbusMap, 3);
         TextureUtility.Convolution(rpCumulonimbusMap, TextureUtility.GenerateGaussianKernel(5));
-        TextureUtility.PixelOperator(rpLowClouds, (x, y, c) => new Color(math.max(c.r,
-            math.saturate(math.unlerp(0.03f, 0.06f, rpCumulonimbusMap.GetPixel(x, y).r))), 1, 1, 1));
+        // TextureUtility.PixelOperator(rpLowClouds, (x, y, c) => new Color(math.max(c.r,
+        //     math.saturate(math.unlerp(0.03f, 0.06f, rpCumulonimbusMap.GetPixel(x, y).r))), 1, 1, 1));
         TextureUtility.PixelOperator(rpCumulonimbusMap, (x, y, c) =>
         {
-            float t = math.saturate(math.unlerp(0.06f, 0.13f, c.r));
+            float low = rpLowClouds.GetPixel(x, y).r;
+            rpLowClouds.SetPixel(x, y, new Color(math.max(low,
+                math.saturate(math.unlerp(0.04f, 0.07f, c.r))), 1, 1, 1));
+            float mid = rpMidClouds.GetPixel(x, y).r;
+            float max = math.max(low, mid);
+            float t = math.saturate(math.unlerp(0.04f, 0.16f, c.r));
             if (t > 0)
-                return new Color(math.lerp(0.33f, 1, t), 1, 1, 1);
-            return Color.clear;
+                t = math.lerp(0.25f, 1, t * t);
+            // Only use cumulonimbus clouds if they won't interfere with other cloud layers
+            return new Color(t, 1, 1, 1);
+            // return new Color(math.remap(0.3f, 0.4f, t, 0, max), 1, 1, 1);
+            // if (t > 0)
+            //     return new Color(math.lerp(0.33f, 1, t), 1, 1, 1);
+            // return Color.clear;
         });
 
         ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, rpRainFog, originMercator, rainExtent);

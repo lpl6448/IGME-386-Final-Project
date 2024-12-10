@@ -45,7 +45,7 @@ MonoBehaviour:
     m_Value: 500
   numPrimarySteps:
     m_OverrideState: 1
-    m_Value: 128
+    m_Value: 256
   numLightSteps:
     m_OverrideState: 1
     m_Value: 16
@@ -71,7 +71,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   altoStratusMap:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {fileID: 0}
     dimension: 2
   altoStratusMapMultiplier:

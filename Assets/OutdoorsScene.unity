@@ -3958,15 +3958,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_LocalPosition:
-    x: 6378136.999412044
-    y: 42.81104236952742
-    z: -75.19965561213246
+    x: 1191493.440687977
+    y: 4335620.022883234
+    z: -4509621.671288419
   m_LocalRotation:
     value:
-      x: -0.50000125
-      y: -0.49999875
-      z: -0.49999535
-      w: 0.50000465
+      x: -0.3946342
+      y: -0.11815807
+      z: -0.05125403
+      w: 0.90976673
 --- !u!4 &1139613954
 Transform:
   m_ObjectHideFlags: 0
@@ -5501,8 +5501,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823688464}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.31637812, y: -0.12406115, z: 0.041770693, w: 0.93955785}
-  m_LocalPosition: {x: 75.19965, y: -0.00059042685, z: -42.811043}
+  m_LocalRotation: {x: -0.120049775, y: -0.46937576, z: -0.39539897, w: 0.78034234}
+  m_LocalPosition: {x: 6166532, y: -5178532, z: -1091900.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5655,9 +5655,9 @@ MonoBehaviour:
     z: 0
     SRWkid: 4326
   rotation:
-    Heading: 344.956334580021
-    Pitch: 52.77958090384715
-    Roll: 0.00008205091344437712
+    Heading: 344.9563352986908
+    Pitch: 52.77958174978903
+    Roll: 0.00008156057311496126
   surfacePlacementMode: 0
   surfacePlacementOffset: 0
 --- !u!114 &1823688470
@@ -5899,30 +5899,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1925087065}
-  - component: {fileID: 1925087064}
-  - component: {fileID: 1925087066}
   - component: {fileID: 1925087067}
   m_Layer: 0
-  m_Name: CoordinateTest
+  m_Name: MapConfigurer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1925087064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1925087063}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f73804855aae9d4392febd7bc029726, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  map: {fileID: 1139613952}
-  extent: 105000
 --- !u!4 &1925087065
 Transform:
   m_ObjectHideFlags: 0
@@ -5938,22 +5922,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1925087066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1925087063}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68a90fd832e4b1745b0fb38360592194, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  map: {fileID: 1139613952}
-  baseTex: {fileID: 2800000, guid: a8a9234e06379bd49a5c22065e865e07, type: 3}
-  extent: 65536
-  output: refl
 --- !u!114 &1925087067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5969,7 +5937,7 @@ MonoBehaviour:
   map: {fileID: 1139613952}
   cameraLocation: {fileID: 1823688469}
   cloudsVolume: {fileID: 1433116526}
-  cloudsExtent: 150000
+  cloudsExtent: 145000
   rainFog: {fileID: 1578305627}
   rainExtent: 75000
   extentMin:

@@ -2581,7 +2581,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!73398921 &495036837
 VFXRenderer:
   serializedVersion: 1
@@ -2590,7 +2590,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 495036836}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -2643,7 +2643,7 @@ VisualEffect:
       - m_Value: 10
         m_Name: Spawn Radius
         m_Overridden: 1
-      - m_Value: 30000
+      - m_Value: 0
         m_Name: Spawn Rate
         m_Overridden: 1
     m_Vector2f:
@@ -5564,7 +5564,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!73398921 &1751922170
 VFXRenderer:
   serializedVersion: 1
@@ -5573,7 +5573,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751922169}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -5626,7 +5626,7 @@ VisualEffect:
       - m_Value: 10
         m_Name: Spawn Radius
         m_Overridden: 1
-      - m_Value: 10000
+      - m_Value: 0
         m_Name: Spawn Rate
         m_Overridden: 1
       - m_Value: 0.75
@@ -5863,6 +5863,7 @@ GameObject:
   - component: {fileID: 1823688470}
   - component: {fileID: 1823688469}
   - component: {fileID: 1823688472}
+  - component: {fileID: 1823688473}
   m_Layer: 0
   m_Name: ArcGISCamera
   m_TagString: MainCamera
@@ -5937,7 +5938,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823688464}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.120049775, y: -0.46937576, z: -0.39539897, w: 0.78034234}
+  m_LocalRotation: {x: 0.7899595, y: 0.46725643, z: 0.39522004, w: -0.03790278}
   m_LocalPosition: {x: 6166532, y: -5178532, z: -1091900.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6093,9 +6094,9 @@ MonoBehaviour:
     z: 0
     SRWkid: 4326
   rotation:
-    Heading: 344.9563352986908
-    Pitch: 52.77958174978903
-    Roll: 0.00008156057311496126
+    Heading: 251.13479124025915
+    Pitch: 140.26626700706572
+    Roll: 23.956978430290945
   surfacePlacementMode: 0
   surfacePlacementOffset: 0
 --- !u!114 &1823688470
@@ -6136,10 +6137,10 @@ MonoBehaviour:
     z: 0
   m_LocalRotation:
     value:
-      x: 0.39450487
-      y: 0.6691111
-      z: 0.22866963
-      w: -0.58682746
+      x: 0.7108869
+      y: 0.54505163
+      z: 0.27044544
+      w: 0.35272905
   m_LocalScale:
     x: 1
     y: 1
@@ -6159,6 +6160,22 @@ MonoBehaviour:
   MaxSpeed: 2000000
   MinSpeed: 1000
   IgnoreUI: 0
+--- !u!114 &1823688473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1823688464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae923807c957a5b4f8be493b47b9f53d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  precipFog: {fileID: 1578305627}
+  rainEffect: {fileID: 495036838}
+  snowEffect: {fileID: 1751922171}
+  samplePoint: {fileID: 1823688467}
 --- !u!1 &1860236098
 GameObject:
   m_ObjectHideFlags: 0
@@ -6378,10 +6395,6 @@ MonoBehaviour:
   cloudsExtent: 145000
   rainFog: {fileID: 1578305627}
   rainExtent: 75000
-  rainFogColorMultiplier: {r: 1.7814789, g: 1.7814789, b: 1.7814789, a: 0}
-  snowFogColorMultiplier: {r: 4.2370954, g: 4.2370954, b: 4.2370954, a: 0}
-  snowFogDensityMultiplier: 1.8
-  reflMulFactor: 0.6666667
   extentMin:
     x: -14600000
     y: 2600000

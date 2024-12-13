@@ -20,10 +20,6 @@ public class MapConfigure : MonoBehaviour
     [SerializeField] private float cloudsExtent;
     [SerializeField] private LocalVolumetricFog rainFog;
     [SerializeField] private float rainExtent;
-    [SerializeField][ColorUsage(false, true)] private Color rainFogColorMultiplier;
-    [SerializeField][ColorUsage(false, true)] private Color snowFogColorMultiplier;
-    [SerializeField] private float snowFogDensityMultiplier;
-    [SerializeField] private float reflMulFactor;
 
     [SerializeField] private float2 extentMin = new float2(-14600000, 2600000);
     [SerializeField] private float2 extentMax = new float2(-6800000, 6500000);
@@ -119,12 +115,8 @@ public class MapConfigure : MonoBehaviour
         ReprojectTexture(RasterImporter.Instance.ReflectivityTexture, rpReflFog, originMercator, rainExtent);
         TextureUtility.PixelOperator(rpReflFog, (x, y, c) =>
         {
-            Color baseColor = new Color(1, 1, 1, math.saturate(math.unlerp(0.03f, 0.23f, c.r)));
             float snowAmount = rpSnowMap.GetPixelBilinear((x + 0.5f) / rpReflFog.width, (y + 0.5f) / rpReflFog.height).r;
-            Color snowMul = Color.Lerp(new Color(rainFogColorMultiplier.r, rainFogColorMultiplier.g, rainFogColorMultiplier.b, 1),
-                new Color(snowFogColorMultiplier.r, snowFogColorMultiplier.g, snowFogColorMultiplier.b, snowFogDensityMultiplier), snowAmount);
-            float reflMul = (c.r - reflMulFactor) * (c.r - reflMulFactor) / reflMulFactor / reflMulFactor;
-            return new Color(baseColor.r * reflMul, baseColor.g * reflMul, baseColor.b * reflMul, baseColor.a) * snowMul;
+            return new Color(c.r, snowAmount, 1, 1);
         });
 
         rpLowClouds.Apply();
@@ -186,8 +178,8 @@ public class MapConfigure : MonoBehaviour
         rpCumulonimbusMap = CreateTexture(256, TextureFormat.R8);
         volumetricClouds.cumulonimbusMap.value = rpCumulonimbusMap;
 
-        rpReflFog = CreateTexture(512, TextureFormat.RGBAHalf);
-        rainFog.parameters.materialMask.SetTexture("_Rain_Texture", rpReflFog);
+        rpReflFog = CreateTexture(512, TextureFormat.RGHalf);
+        rainFog.parameters.materialMask.SetTexture("_Refl_Snow_Map", rpReflFog);
 
         rpRainMap = CreateTexture(256, TextureFormat.R8);
         volumetricClouds.rainMap.value = rpRainMap;

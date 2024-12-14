@@ -25,7 +25,7 @@ public class CelestialController : MonoBehaviour
         if (moonLight != null)
             moonLight.transform.eulerAngles = new Vector3((float)moonPos.Altitude, (float)moonPos.Azimuth) * Mathf.Rad2Deg;
 
-        if (sunPos.Altitude < 0)
+        if (sunPos.Altitude * Mathf.Rad2Deg < -3)
         {
             if (sunLight != null)
                 sunLight.shadows = LightShadows.None;

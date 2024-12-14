@@ -30,7 +30,7 @@ public class MapSelector : MonoBehaviour
     {
         reflMat = new Material(reflImage.material);
         reflImage.material = reflMat;
-        
+
         reflImage.texture = RasterImporter.Instance.ReflectivityTexture;
         reflMat.SetTexture("_PrecipFlagTex", RasterImporter.Instance.PrecipFlagTexture);
         cloudsImage.texture = RasterImporter.Instance.TotalCloudsTexture;
@@ -42,6 +42,24 @@ public class MapSelector : MonoBehaviour
     {
         grow = false;
         growStartTime = -1;
+    }
+
+    public void SelectLocation(ArcGISPoint point)
+    {
+        if (grow)
+            return;
+
+        grow = true;
+        growStartTime = -1;
+
+        MapConfigure.Instance.ReconfigureMap(point);
+
+        ArcGISPoint pointMercator = GeoUtils.ProjectToSpatialReference(point, ArcGISSpatialReference.WebMercator());
+        float2 pointUV = math.unlerp(mapExtentMin, mapExtentMax, (float2)new double2(pointMercator.X, pointMercator.Y));
+        float2 pointR = math.lerp(mapBounds.rect.min, mapBounds.rect.max, pointUV);
+        float2 pointSS = ((float3)canvas.worldCamera.WorldToScreenPoint(mapBounds.TransformPoint((Vector2)pointR))).xy;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(mapPanel, pointSS, canvas.worldCamera, out Vector2 panelPoint);
+        mapPanel.pivot = Rect.PointToNormalized(mapPanel.rect, panelPoint);
     }
 
     private void LateUpdate()
@@ -67,15 +85,9 @@ public class MapSelector : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    grow = true;
-                    growStartTime = Time.time;
-
                     ArcGISPoint originMercator = new ArcGISPoint(projPoint.x, projPoint.y, ArcGISSpatialReference.WebMercator());
                     ArcGISPoint originPoint = GeoUtils.ProjectToSpatialReference(originMercator, MapConfigure.Instance.MapReference);
-                    MapConfigure.Instance.ReconfigureMap(originPoint);
-
-                    RectTransformUtility.ScreenPointToLocalPointInRectangle(mapPanel, Input.mousePosition, canvas.worldCamera, out Vector2 panelPoint);
-                    mapPanel.pivot = Rect.PointToNormalized(mapPanel.rect, panelPoint);
+                    SelectLocation(originPoint);
                 }
             }
             else
@@ -86,6 +98,8 @@ public class MapSelector : MonoBehaviour
 
         if (grow)
         {
+            if (growStartTime == -1)
+                growStartTime = Time.time; // Prevents the initial frame freeze from making grow time jump
             float elapsed = Time.time - growStartTime;
             mapPanel.localScale = Vector3.one * math.min(100000, math.exp(8 * elapsed * elapsed * elapsed));
 

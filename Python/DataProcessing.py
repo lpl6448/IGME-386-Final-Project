@@ -5,16 +5,73 @@ import arcpy
 import requests
 import gzip
 import shutil
+import sys
+import re
+import xml.etree.ElementTree as ET
+
+# Archive Data Setup
+def validate_timestamp_format(timestamp):
+    """Validates if the timestamp is in the format YYYYMMDD-HH00."""
+    pattern = r"^\d{8}-\d{4}$"  # Regex for YYYYMMDD-HH00
+    return re.match(pattern, timestamp) is not None
+
+def format_url_r(timestamp):
+    """Formats the timestamp into the required URL."""
+    date_part = timestamp.split('-')[0]  # Extract YYYYMMDD
+    xml_link = f"https://noaa-mrms-pds.s3.amazonaws.com/?list-type=2&prefix=CONUS/ReflectivityAtLowestAltitude_00.50/{date_part}/MRMS_ReflectivityAtLowestAltitude_00.50_{timestamp}"
+    try:
+        response = requests.get(xml_link)
+        response.raise_for_status()  # Raise an error for HTTP issues
+        xml_content = response.text  # Get the XML content as a string
+
+        # Use a regex pattern to find the value inside <Key>...</Key>
+        key = re.search(r'<Key>(.*?)</Key>', xml_content)
+        return key.group(1).strip()
+
+    except Exception as e:
+        print(f"Error reading XML file: {e}")
+        return None
+    
+def format_url_p(timestamp):
+    """Formats the timestamp into the required URL."""
+    date_part = timestamp.split('-')[0]  # Extract YYYYMMDD
+    xml_link = f"https://noaa-mrms-pds.s3.amazonaws.com/?list-type=2&prefix=CONUS/PrecipFlag_00.00/{date_part}/MRMS_PrecipFlag_00.00_{timestamp}"
+    try:
+        response = requests.get(xml_link)
+        response.raise_for_status()  # Raise an error for HTTP issues
+        xml_content = response.text  # Get the XML content as a string
+
+        # Use a regex pattern to find the value inside <Key>...</Key>
+        key = re.search(r'<Key>(.*?)</Key>', xml_content)
+        return key.group(1).strip()
+
+    except Exception as e:
+        print(f"Error reading XML file: {e}")
+        return None
+
+if len(sys.argv) > 1:
+    timestamp = sys.argv[1]
+    if validate_timestamp_format(timestamp):
+        print(f"Valid timestamp: {timestamp}")
+        reflect = format_url_r(timestamp)
+        precip = format_url_p(timestamp)
+        download_url = f"https://noaa-mrms-pds.s3.amazonaws.com/{reflect}"
+        download_url_precip = f"https://noaa-mrms-pds.s3.amazonaws.com/{precip}"
+    else:
+        print("Invalid timestamp format. Expected YYYYMMDD-HH00.")
+
+else:
+    download_url = "https://mrms.ncep.noaa.gov/data/2D/ReflectivityAtLowestAltitude/MRMS_ReflectivityAtLowestAltitude.latest.grib2.gz"
+    download_url_precip = "https://mrms.ncep.noaa.gov/data/2D/PrecipFlag/MRMS_PrecipFlag.latest.grib2.gz"
+
 
 # Paths and settings
-download_url = "https://mrms.ncep.noaa.gov/data/2D/ReflectivityAtLowestAltitude/MRMS_ReflectivityAtLowestAltitude.latest.grib2.gz"
 download_path = r"Data\Zipped\MRMS_ReflectivityAtLowestAltitude.latest.grib2.gz"
 unzip_path = r"Data\Unzipped\MRMS_ReflectivityAtLowestAltitude.latest.grib2"
 final_raster_path = r"Data\Raster\Reflectivity_Reprojected.tif"
 final_raster_path_extent = r"Data\Raster\Reflectivity_Extent.PNG"
 
 # Precipitation data
-download_url_precip = "https://mrms.ncep.noaa.gov/data/2D/PrecipFlag/MRMS_PrecipFlag.latest.grib2.gz"
 download_path_precip = r"Data\Zipped\MRMS_PrecipFlag.latest.grib2.gz"
 unzip_path_precip = r"Data\Unzipped\MRMS_PrecipFlag.latest.grib2"
 final_raster_path_precip = r"Data\Raster\Precipitation_Reprojected.tif"

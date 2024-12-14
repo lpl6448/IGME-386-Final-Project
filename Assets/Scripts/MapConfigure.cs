@@ -15,6 +15,7 @@ public class MapConfigure : MonoBehaviour
 
     [SerializeField] private ArcGISMapComponent map;
     [SerializeField] private ArcGISLocationComponent cameraLocation;
+    [SerializeField] private CelestialController celestialController;
 
     [SerializeField] private Volume cloudsVolume;
     [SerializeField] private float cloudsExtent;
@@ -43,6 +44,7 @@ public class MapConfigure : MonoBehaviour
     public void ReconfigureMap(ArcGISPoint originPoint, bool resetCamera = true)
     {
         map.OriginPosition = originPoint;
+        celestialController.UpdateSunMoon(originPoint, RasterImporter.Instance.Timestamp);
 
         ArcGISPoint originPointMercator = GeoUtils.ProjectToSpatialReference(originPoint, ArcGISSpatialReference.WebMercator());
         float2 originMercator = (float2)new double2(originPointMercator.X, originPointMercator.Y);

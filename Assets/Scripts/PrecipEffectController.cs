@@ -31,7 +31,7 @@ public class PrecipEffectController : MonoBehaviour
         snowEffect.SetFloat("Spawn Rate", math.min(33333, snowPrecipIntensity * 600000));
         snowEffect.SetVector3("Fall Velocity", new Vector3(0.5f + snowPrecipIntensity * 120, -2, 0));
         snowEffect.SetFloat("Turbulence Strength", math.lerp(0.75f, 50, snowPrecipIntensity));
-        snowEffect.SetFloat("Min Size", math.lerp(0.004f, 0.1f, snowPrecipIntensity));
-        snowEffect.SetFloat("Max Size", math.lerp(0.012f, 0.3f, snowPrecipIntensity));
+        snowEffect.SetFloat("Min Size", math.lerp(0.004f, 0.07f, snowPrecipIntensity));
+        snowEffect.SetFloat("Max Size", math.lerp(0.012f, 0.21f, snowPrecipIntensity));
     }
 }

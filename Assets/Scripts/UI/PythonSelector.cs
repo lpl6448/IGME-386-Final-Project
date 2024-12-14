@@ -20,7 +20,7 @@ public class PythonSelector : MonoBehaviour
 
     private PythonScriptStatus status;
 
-    private void Start()
+    private void OnEnable()
     {
         pathInput.text = PlayerPrefs.GetString("386-python-path", defaultPath);
         bypassButton.interactable = RasterImporter.Instance.HasValidTextures();

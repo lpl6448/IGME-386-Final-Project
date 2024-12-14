@@ -136,7 +136,7 @@ public class RasterImporter : MonoBehaviour
 
         CloudLevelTexture = ImportTexture(cloudLevelPath, TextureFormat.RFloat);
 
-        Timestamp = DateTime.Parse(File.ReadAllText(TimestampPath));
+        Timestamp = DateTime.FromFileTimeUtc(long.Parse(File.ReadAllText(TimestampPath)));
     }
 
     private void Awake()

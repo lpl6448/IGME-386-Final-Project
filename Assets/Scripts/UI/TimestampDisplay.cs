@@ -10,7 +10,7 @@ public class TimestampDisplay : MonoBehaviour
     {
         if (RasterImporter.Instance != null && RasterImporter.Instance.Timestamp > new DateTime())
         {
-            DateTime localTimestamp = TimeZoneInfo.ConvertTimeFromUtc(RasterImporter.Instance.Timestamp, TimeZoneInfo.Local);
+            DateTime localTimestamp = RasterImporter.Instance.Timestamp.ToLocalTime();
             text.text = localTimestamp.ToString("MM/dd/yyyy h:mmtt").ToLower();
         }
     }

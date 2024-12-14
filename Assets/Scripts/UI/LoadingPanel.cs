@@ -70,7 +70,7 @@ public class LoadingPanel : MonoBehaviour
         if (CurrentState == LoadState.Success)
         {
             loadingText.text = "Finishing up...";
-            File.WriteAllText(RasterImporter.Instance.TimestampPath, startTimestamp.ToString());
+            File.WriteAllText(RasterImporter.Instance.TimestampPath, startTimestamp.ToFileTimeUtc().ToString());
             yield return new WaitForSeconds(1);
             onSuccess.Invoke();
         }

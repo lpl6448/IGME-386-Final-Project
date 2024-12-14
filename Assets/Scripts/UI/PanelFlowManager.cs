@@ -44,6 +44,7 @@ public class PanelFlowManager : MonoBehaviour
         settingsPanel.SetActive(true);
         loadingPanel.gameObject.SetActive(false);
         simulationPanel.gameObject.SetActive(false);
+        mapPanel.gameObject.SetActive(false);
     }
     public void BypassLoading()
     {

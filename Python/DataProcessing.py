@@ -7,7 +7,6 @@ import gzip
 import shutil
 import sys
 import re
-import xml.etree.ElementTree as ET
 
 # Archive Data Setup
 def validate_timestamp_format(timestamp):

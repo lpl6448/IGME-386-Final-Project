@@ -4,13 +4,11 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone
 import os
+import sys
+import re
 
 # Get the current date
 current_date = datetime.now().strftime('%Y%m%d')
-
-import sys
-import re
-import xml.etree.ElementTree as ET
 
 # Directory to save the file
 save_directory = r"Data\Unzipped"

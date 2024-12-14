@@ -6400,8 +6400,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.5
+  far clip plane: 200000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -6456,8 +6456,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   volumeAnchorOverride: {fileID: 0}
-  antialiasing: 2
-  SMAAQuality: 2
+  antialiasing: 3
+  SMAAQuality: 1
   dithering: 1
   stopNaNs: 0
   taaSharpenStrength: 0.5
@@ -6601,7 +6601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bbba49acb848c0448694828560b07fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpdateClippingPlanes: 1
+  UpdateClippingPlanes: 0
   UseCameraViewportProperties: 1
   verticalFov: 0
   horizontalFov: 0

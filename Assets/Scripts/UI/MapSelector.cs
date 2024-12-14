@@ -25,6 +25,7 @@ public class MapSelector : MonoBehaviour
     private Material reflMat;
     private bool grow = false;
     private float growStartTime;
+    private float mapStartTime;
 
     public void InitializeMap()
     {
@@ -37,6 +38,8 @@ public class MapSelector : MonoBehaviour
 
         mapPanel.localScale = Vector3.one;
         alphaGroup.alpha = 1;
+
+        mapStartTime = Time.time;
     }
     public void Reset()
     {
@@ -46,7 +49,7 @@ public class MapSelector : MonoBehaviour
 
     public void SelectLocation(ArcGISPoint point)
     {
-        if (grow)
+        if (grow || Time.time - mapStartTime < 0.5f)
             return;
 
         grow = true;

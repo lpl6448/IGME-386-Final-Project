@@ -161,13 +161,19 @@ public class PythonScriptStatus
     public void Exit()
     {
         lock (this)
-            if (Process != null)
+            try
+            {
                 Process.Close();
+            }
+            catch { }
     }
     public void Kill()
     {
         lock (this)
-            if (Process != null)
+            try
+            {
                 Process.Kill();
+            }
+            catch { }
     }
 }

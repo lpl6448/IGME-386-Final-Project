@@ -10,17 +10,17 @@ public class PanelFlowManager : MonoBehaviour
         Simulation,
     }
 
-    [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private SettingsPanel settingsPanel;
     [SerializeField] private LoadingPanel loadingPanel;
     [SerializeField] private MapSelector mapPanel;
-    [SerializeField] private GameObject simulationPanel;
+    [SerializeField] private SimulationPanel simulationPanel;
 
     public State CurrentState { get; private set; }
 
     private void Start()
     {
         CurrentState = State.Settings;
-        settingsPanel.SetActive(true);
+        settingsPanel.gameObject.SetActive(true);
         mapPanel.gameObject.SetActive(false);
         loadingPanel.gameObject.SetActive(false);
         simulationPanel.gameObject.SetActive(false);
@@ -31,17 +31,20 @@ public class PanelFlowManager : MonoBehaviour
             return;
 
         CurrentState = State.Loading;
-        settingsPanel.SetActive(false);
+        settingsPanel.gameObject.SetActive(false);
         loadingPanel.gameObject.SetActive(true);
-        loadingPanel.Load();
+        if (settingsPanel.TimestampInput.UseTimestamp)
+            loadingPanel.Load(settingsPanel.TimestampInput.Timestamp);
+        else
+            loadingPanel.Load();
     }
     public void BackToSettings()
     {
         if (CurrentState == State.Settings)
             return;
-        
+
         CurrentState = State.Settings;
-        settingsPanel.SetActive(true);
+        settingsPanel.gameObject.SetActive(true);
         loadingPanel.gameObject.SetActive(false);
         simulationPanel.gameObject.SetActive(false);
         mapPanel.gameObject.SetActive(false);
@@ -50,8 +53,8 @@ public class PanelFlowManager : MonoBehaviour
     {
         if (CurrentState != State.Settings)
             return;
-        
-        settingsPanel.SetActive(false);
+
+        settingsPanel.gameObject.SetActive(false);
         CurrentState = State.Loading;
         ProgressToMap();
     }
@@ -59,7 +62,7 @@ public class PanelFlowManager : MonoBehaviour
     {
         if (CurrentState != State.Simulation)
             return;
-        
+
         CurrentState = State.Map;
         simulationPanel.gameObject.SetActive(false);
         mapPanel.gameObject.SetActive(true);
@@ -80,7 +83,7 @@ public class PanelFlowManager : MonoBehaviour
     {
         if (CurrentState != State.Map)
             return;
-        
+
         CurrentState = State.Simulation;
         mapPanel.gameObject.SetActive(false);
         simulationPanel.gameObject.SetActive(true);

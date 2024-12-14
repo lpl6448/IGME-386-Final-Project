@@ -1,32 +1,21 @@
 using System.Collections;
 using System.IO;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PythonSelector : MonoBehaviour
+public class PythonSelector : ValidationInput
 {
-    [SerializeField] private TMP_InputField pathInput;
     [SerializeField] private string defaultPath;
-
-    [SerializeField] private Image validationOutline;
-    [SerializeField] private TMP_Text validationText;
-    [SerializeField] private Button launchButton;
-    [SerializeField] private Button bypassButton;
-
-    [SerializeField] private Color validColor;
-    [SerializeField] private Color testingColor;
-    [SerializeField] private Color invalidColor;
 
     private PythonScriptStatus status;
 
     private void OnEnable()
     {
-        pathInput.text = PlayerPrefs.GetString("386-python-path", defaultPath);
-        bypassButton.interactable = RasterImporter.Instance.HasValidTextures();
+        input.SetTextWithoutNotify(PlayerPrefs.GetString("386-python-path", defaultPath));
+        Validate();
     }
 
-    public void ValidatePath()
+    public override void Validate()
     {
         StopAllCoroutines();
         if (status != null)
@@ -35,7 +24,7 @@ public class PythonSelector : MonoBehaviour
             status = null;
         }
 
-        StartCoroutine(ValidatePathCrt(pathInput.text));
+        StartCoroutine(ValidatePathCrt(input.text));
     }
     private IEnumerator ValidatePathCrt(string path)
     {
@@ -67,22 +56,5 @@ public class PythonSelector : MonoBehaviour
 
         PlayerPrefs.SetString("386-python-path", path);
         PlayerPrefs.Save();
-    }
-
-    enum StatusType
-    {
-        Invalid,
-        Loading,
-        Valid,
-    }
-
-    private void SetStatus(StatusType type, string message)
-    {
-        Color validationColor = type == StatusType.Invalid ? invalidColor : type == StatusType.Loading ? testingColor : validColor;
-        validationText.text = message;
-        validationText.color = validationColor;
-        validationOutline.color = validationColor;
-
-        launchButton.interactable = type == StatusType.Valid;
     }
 }

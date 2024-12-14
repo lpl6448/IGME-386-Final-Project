@@ -29,9 +29,18 @@ public class LoadingPanel : MonoBehaviour
     private LoadState cloudsState;
     private List<PythonScriptStatus> activeScripts = new List<PythonScriptStatus>();
     private DateTime startTimestamp;
+    private string archiveTimestamp;
 
+    public void Load(DateTime timestamp)
+    {
+        startTimestamp = timestamp;
+        archiveTimestamp = timestamp.ToString("yyyyMMdd-HH") + "00";
+        StartCoroutine(LoadCrt());
+    }
     public void Load()
     {
+        startTimestamp = DateTime.UtcNow;
+        archiveTimestamp = null;
         StartCoroutine(LoadCrt());
     }
     public void Cancel()
@@ -53,7 +62,6 @@ public class LoadingPanel : MonoBehaviour
             File.Delete(RasterImporter.Instance.TimestampPath);
         radar.Initialize();
         clouds.Initialize();
-        startTimestamp = DateTime.UtcNow;
 
         StartCoroutine(RadarCrt());
         StartCoroutine(CloudsCrt());
@@ -83,7 +91,7 @@ public class LoadingPanel : MonoBehaviour
     {
         radarState = LoadState.InProgress;
 
-        yield return RunScriptMultipleAttempts(radar, 0, 1, 0, "Python/DataProcessing.py");
+        yield return RunScriptMultipleAttempts(radar, 0, 1, 0, "Python/DataProcessing.py", archiveTimestamp);
         if (!attemptsSuccesses[0])
         {
             radar.OverrideStatus("Failed to download and process data!", LoadingBar.ColorType.Failure);
@@ -98,7 +106,7 @@ public class LoadingPanel : MonoBehaviour
     {
         cloudsState = LoadState.InProgress;
 
-        yield return RunScriptMultipleAttempts(clouds, 0, 0.3f, 1, "Python/CloudDataDownload.py");
+        yield return RunScriptMultipleAttempts(clouds, 0, 0.3f, 1, "Python/CloudDataDownload.py", archiveTimestamp);
         if (!attemptsSuccesses[1])
         {
             clouds.OverrideStatus("Failed to download data!", LoadingBar.ColorType.Failure);

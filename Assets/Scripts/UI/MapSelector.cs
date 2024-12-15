@@ -1,3 +1,4 @@
+using System.Collections;
 using Esri.ArcGISMapsSDK.Utils.GeoCoord;
 using Esri.GameEngine.Geometry;
 using Unity.Mathematics;
@@ -9,6 +10,7 @@ public class MapSelector : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
     [SerializeField] private UnityEvent onExit;
+    [SerializeField] private UnityEvent onQuit;
     [SerializeField] private RectTransform mapBounds;
     [SerializeField] private RectTransform selectionBox;
     [SerializeField] private float selectionExtent;
@@ -63,6 +65,17 @@ public class MapSelector : MonoBehaviour
         float2 pointSS = ((float3)canvas.worldCamera.WorldToScreenPoint(mapBounds.TransformPoint((Vector2)pointR))).xy;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(mapPanel, pointSS, canvas.worldCamera, out Vector2 panelPoint);
         mapPanel.pivot = Rect.PointToNormalized(mapPanel.rect, panelPoint);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            StartCoroutine(QuitCrt());
+    }
+    private IEnumerator QuitCrt()
+    {
+        yield return null;
+        onQuit.Invoke();
     }
 
     private void LateUpdate()

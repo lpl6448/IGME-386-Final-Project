@@ -11,7 +11,6 @@ public class PlaceSearch : MonoBehaviour
 {
     [SerializeField] private MapSelector mapSelector;
     [SerializeField] private string searchUrl;
-    [SerializeField] private string apiKey;
     [SerializeField] private PlaceSearchItem itemPrefab;
     [SerializeField] private Transform itemContainer;
     [SerializeField] private TMP_InputField searchInput;
@@ -66,7 +65,7 @@ public class PlaceSearch : MonoBehaviour
 
             if (!string.IsNullOrWhiteSpace(lastSearch))
             {
-                req = UnityWebRequest.Get(searchUrl.Replace("{0}", lastSearch) + apiKey);
+                req = UnityWebRequest.Get(searchUrl.Replace("{0}", lastSearch) + ApiKeyInput.Instance.ApiKey);
                 req.SendWebRequest();
             }
             else

@@ -43,6 +43,7 @@ public class MapConfigure : MonoBehaviour
     }
     public void ReconfigureMap(ArcGISPoint originPoint, bool resetCamera = true)
     {
+        map.APIKey = ApiKeyInput.Instance.ApiKey;
         map.OriginPosition = originPoint;
         celestialController.UpdateSunMoon(originPoint, RasterImporter.Instance.Timestamp);
 

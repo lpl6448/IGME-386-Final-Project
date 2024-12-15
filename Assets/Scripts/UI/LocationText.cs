@@ -9,7 +9,6 @@ using UnityEngine.Networking;
 public class LocationText : MonoBehaviour
 {
     [SerializeField] private string templateUrl;
-    [SerializeField] private string apiKey;
     [SerializeField] private float updatePeriod;
     [SerializeField] private float updateDistance;
     [SerializeField] private ArcGISLocationComponent trackLocation;
@@ -59,7 +58,7 @@ public class LocationText : MonoBehaviour
             if (dis >= updateDistance && Time.time - updateTime > updatePeriod)
             {
                 lastLocation = camPoint;
-                req = UnityWebRequest.Get(templateUrl.Replace("{0}", lastLocation.X + "," + lastLocation.Y) + apiKey);
+                req = UnityWebRequest.Get(templateUrl.Replace("{0}", lastLocation.X + "," + lastLocation.Y) + ApiKeyInput.Instance.ApiKey);
                 req.SendWebRequest();
             }
         }

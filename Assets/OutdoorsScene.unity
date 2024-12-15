@@ -5617,7 +5617,7 @@ MonoBehaviour:
   validColor: {r: 0.4745098, g: 0.92941177, b: 0.4745098, a: 1}
   testingColor: {r: 0.92941177, g: 0.92941177, b: 0.4745098, a: 1}
   invalidColor: {r: 0.92941177, g: 0.4745098, b: 0.4745098, a: 1}
-  startTimestamp: 2020/10/22 00:00
+  startTimestamp: 2021/12/22 00:00
   archiveDelayHours: 3
 --- !u!1 &1019409060
 GameObject:

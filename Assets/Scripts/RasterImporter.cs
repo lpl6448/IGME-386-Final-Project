@@ -3,6 +3,7 @@ using UnityEngine;
 using BitMiracle.LibTiff.Classic;
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 public class RasterImporter : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class RasterImporter : MonoBehaviour
     public Texture2D TotalCloudsTexture;
     public Texture2D CloudLevelTexture;
     public DateTime Timestamp;
+
+    private List<Texture2D> texHandles = new List<Texture2D>();
 
     private Texture2D ImportTexture(string path, TextureFormat format)
     {
@@ -97,6 +100,7 @@ public class RasterImporter : MonoBehaviour
         tex.filterMode = FilterMode.Bilinear;
         tex.wrapMode = TextureWrapMode.Clamp;
 
+        texHandles.Add(tex);
         return tex;
     }
 
@@ -113,6 +117,8 @@ public class RasterImporter : MonoBehaviour
     {
         if (!HasValidTextures())
             return;
+
+        DestroyTextures();
 
         ReflectivityTexture = ImportTexture(reflectivityPath, TextureFormat.R8);
 
@@ -139,9 +145,19 @@ public class RasterImporter : MonoBehaviour
         Timestamp = DateTime.FromFileTimeUtc(long.Parse(File.ReadAllText(TimestampPath)));
     }
 
+    private void DestroyTextures()
+    {
+        foreach (Texture2D tex in texHandles)
+            Destroy(tex);
+    }
+
     private void Awake()
     {
         Instance = this;
+    }
+    private void OnDestroy()
+    {
+        DestroyTextures();
     }
 }
 

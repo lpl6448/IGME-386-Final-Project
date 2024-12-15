@@ -106,16 +106,6 @@ public class PythonManager : MonoBehaviour
     {
         Instance = this;
     }
-    private void Start()
-    {
-        // PythonScriptStatus status = new PythonScriptStatus(
-        //     (f, s) => print("Progress: " + f + " - " + s),
-        //     (s) => print("Output: " + s),
-        //     (s) => UnityEngine.Debug.LogError(s),
-        //     (c) => print("Process exited with code " + c)
-        // );
-        // RunScript("Python/test.py", "hi", status);
-    }
     private void OnDestroy()
     {
         foreach (PythonScriptStatus status in processes)

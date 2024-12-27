@@ -2,6 +2,9 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using System.IO;
 
+/// <summary>
+/// Post-build step where the Python scripts required for data processing are copied to the output directory
+/// </summary>
 public static class PostBuild
 {
     [PostProcessBuild(1)]

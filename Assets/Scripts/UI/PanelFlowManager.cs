@@ -1,36 +1,48 @@
 using UnityEngine;
 
+/// <summary>
+/// Controls top-level UI screen visibility and user flows
+/// </summary>
 public class PanelFlowManager : MonoBehaviour
 {
+    /// <summary>
+    /// Contains all possible states that the game UI can be in
+    /// </summary>
     public enum State
     {
-        Settings,
-        Loading,
-        Map,
-        Simulation,
+        Settings,   // Setup screen
+        Loading,    // Loading operation
+        Map,        // Map selection
+        Simulation, // In simulation (only UI overlays)
     }
 
+    private State currentState; // Currently active UI state
+
+    // References
     [SerializeField] private SettingsPanel settingsPanel;
     [SerializeField] private LoadingPanel loadingPanel;
     [SerializeField] private MapSelector mapPanel;
     [SerializeField] private SimulationPanel simulationPanel;
 
-    public State CurrentState { get; private set; }
-
     private void Start()
     {
-        CurrentState = State.Settings;
+        // Activate the settings panel
+        currentState = State.Settings;
         settingsPanel.gameObject.SetActive(true);
         mapPanel.gameObject.SetActive(false);
         loadingPanel.gameObject.SetActive(false);
         simulationPanel.gameObject.SetActive(false);
     }
+
+    /// <summary>
+    /// Transitions from Settings to Loading and begins loading using the configured timestamp/archive settings
+    /// </summary>
     public void ProgressToLoading()
     {
-        if (CurrentState != State.Settings)
+        if (currentState != State.Settings)
             return;
 
-        CurrentState = State.Loading;
+        currentState = State.Loading;
         settingsPanel.gameObject.SetActive(false);
         loadingPanel.gameObject.SetActive(true);
         if (settingsPanel.TimestampInput.UseTimestamp)
@@ -38,53 +50,73 @@ public class PanelFlowManager : MonoBehaviour
         else
             loadingPanel.Load();
     }
+
+    /// <summary>
+    /// Transitions from any state back to Settings
+    /// </summary>
     public void BackToSettings()
     {
-        if (CurrentState == State.Settings)
+        if (currentState == State.Settings)
             return;
 
-        CurrentState = State.Settings;
+        currentState = State.Settings;
         settingsPanel.gameObject.SetActive(true);
         loadingPanel.gameObject.SetActive(false);
         simulationPanel.gameObject.SetActive(false);
         mapPanel.gameObject.SetActive(false);
     }
+
+    /// <summary>
+    /// Transitions from Settings to Map, instead using cached data to load the map
+    /// </summary>
     public void BypassLoading()
     {
-        if (CurrentState != State.Settings)
+        if (currentState != State.Settings)
             return;
 
         settingsPanel.gameObject.SetActive(false);
-        CurrentState = State.Loading;
+        currentState = State.Loading;
         ProgressToMap();
     }
+
+    /// <summary>
+    /// Transitions from Simulation to Map, initializing the map selector
+    /// </summary>
     public void BackToMap()
     {
-        if (CurrentState != State.Simulation)
+        if (currentState != State.Simulation)
             return;
 
-        CurrentState = State.Map;
+        currentState = State.Map;
         simulationPanel.gameObject.SetActive(false);
         mapPanel.gameObject.SetActive(true);
         mapPanel.InitializeMap();
     }
+
+    /// <summary>
+    /// Transitions from Loading to Map, importing the processed textures and initializing the map selector
+    /// </summary>
     public void ProgressToMap()
     {
-        if (CurrentState != State.Loading)
+        if (currentState != State.Loading)
             return;
 
-        CurrentState = State.Map;
+        currentState = State.Map;
         RasterImporter.Instance.ImportTextures();
         loadingPanel.gameObject.SetActive(false);
         mapPanel.gameObject.SetActive(true);
         mapPanel.InitializeMap();
     }
+
+    /// <summary>
+    /// Transitions from Map to Simulation
+    /// </summary>
     public void ProgressToSimulation()
     {
-        if (CurrentState != State.Map)
+        if (currentState != State.Map)
             return;
 
-        CurrentState = State.Simulation;
+        currentState = State.Simulation;
         mapPanel.gameObject.SetActive(false);
         simulationPanel.gameObject.SetActive(true);
     }
